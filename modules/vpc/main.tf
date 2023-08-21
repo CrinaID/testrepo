@@ -20,12 +20,12 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-resource "aws_vpc" "vpc" {
+resource "aws_vpc" "vpc_dev_test" {
   cidr_block = var.cidr_vpc
   enable_dns_hostnames = true
   enable_dns_support = true
   tags      = {
-    Name    = "${var.env_name} -vpc"
+    Name    = "${var.env_name}-vpc"
   }
 }
 
@@ -34,7 +34,7 @@ data "aws_availability_zones" "available" {}
 resource "aws_subnet" "private_subnet_one" {
   availability_zone = data.aws_availability_zones.available.names[0]
   cidr_block = var.subnet_one_cidr
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.vpc_dev_test.id
   tags = {
     "Name" = "PrivateSubnetOne-${var.env_name}"
   }
@@ -42,7 +42,7 @@ resource "aws_subnet" "private_subnet_one" {
 resource "aws_subnet" "private_subnet_two" {
   availability_zone = data.aws_availability_zones.available.names[1]
   cidr_block = var.subnet_two_cidr
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.vpc_dev_test.id
   tags = {
     "Name" = "PrivateSubnetTwo-${var.env_name}"
   }
@@ -50,7 +50,7 @@ resource "aws_subnet" "private_subnet_two" {
 resource "aws_subnet" "nat_gateway_one" {
   availability_zone = data.aws_availability_zones.available.names[0]
   cidr_block = var.nat_gateway_one_cidr
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.vpc_dev_test.id
   tags = {
     "Name" = "SubnetOneNAT-${var.env_name}"
   }
@@ -64,14 +64,14 @@ resource "aws_subnet" "nat_gateway_one" {
   }
 }*/
 resource "aws_internet_gateway" "internet_gateway" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.vpc_dev_test.id
   tags = {
     "Name" = "InternetGateway-${var.env_name}"
   }
 }
 
 resource "aws_route_table" "internet_gateway_rt" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.vpc_dev_test.id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.internet_gateway.id
