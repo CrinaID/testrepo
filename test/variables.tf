@@ -8,7 +8,7 @@ variable "test_subnet_one" {
 }
 variable "test_subnet_two" {
     type = string
-    default = "10.11.0.128/24"
+    default = "10.11.1.0/24"
 }
 variable "test_natgw_one"  {
      type = string
