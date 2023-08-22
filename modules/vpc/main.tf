@@ -91,6 +91,6 @@ resource "aws_subnet" "nat_gateway_one" {
   # Associating it in the Public Subnet!
   subnet_id = aws_subnet.public_subnet_one.id
   tags = {
-    Name = "Nat-Gateway-${env_name}"
+    Name = "NatGateway-${var.env_name}"
   }
 }
