@@ -80,14 +80,16 @@ resource "aws_eip" "Nat-Gateway-EIP" {
   }
 }
 
-resource "aws_subnet" "nat_gateway_one" {
-
+resource "aws_nat_gateway" "nat_gateway_one" {
+  depends_on = [
+    aws_eip.Nat-Gateway-EIP
+  ]
   vpc_id = aws_vpc.vpc_dev_test.id
   # Allocating the Elastic IP to the NAT Gateway!
+  eip_id = aws_eip.Nat-Gateway-EIP.id
   
-  assign_eip_on_create = true
   # Associating it in the Public Subnet!
-  
+  subnet_id = aws_subnet.public_subnet_one.id
   tags = {
     Name = "NatGateway-${var.env_name}"
   }
