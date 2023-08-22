@@ -1,23 +1,5 @@
-resource "aws_vpc" "vpc" {
-    cidr_block = var.cidr_vpc
-    enable_dns_hostnames = "true"
-    enable_dns_support = "true"
-
-}
-
-/*resource "aws_subnet" "public" {
-    cidr_block = cidrsubnet("${var.cidr_cidr}, 8, 1")
-    vpc_id = aws_vpc.vpc.id
-     
-}
-
-resource "aws_subnet" "private"{
-    cidr_block = cidrsubnet("${var.cidr_cidr}, 8, 2")
-    vpc_id = aws_vpc.vpc.id
-}*/
-//parametrize this code
 provider "aws" {
-  region = "eu-central-1"
+  region = "eu-west-2"
 }
 
 resource "aws_vpc" "vpc_dev_test" {
@@ -30,7 +12,22 @@ resource "aws_vpc" "vpc_dev_test" {
 }
 
 data "aws_availability_zones" "available" {}
-
+resource "aws_subnet" "public_subnet_one" {
+  availability_zone = data.aws_availability_zones.available.names[0]
+  cidr_block = var.public_subnet_one_cidr
+  vpc_id = aws_vpc.vpc_dev_test.id
+  tags = {
+    "Name" = "PublicSubnetOne-${var.env_name}"
+  }
+}
+resource "aws_subnet" "public_subnet_two" {
+  availability_zone = data.aws_availability_zones.available.names[1]
+  cidr_block = var.public_subnet_two_cidr
+  vpc_id = aws_vpc.vpc_dev_test.id
+  tags = {
+    "Name" = "PublicSubnetOne-${var.env_name}"
+  }
+}
 resource "aws_subnet" "private_subnet_one" {
   availability_zone = data.aws_availability_zones.available.names[0]
   cidr_block = var.subnet_one_cidr
@@ -47,29 +44,15 @@ resource "aws_subnet" "private_subnet_two" {
     "Name" = "PrivateSubnetTwo-${var.env_name}"
   }
 }
-resource "aws_subnet" "nat_gateway_one" {
-  availability_zone = data.aws_availability_zones.available.names[0]
-  cidr_block = var.nat_gateway_one_cidr
-  vpc_id = aws_vpc.vpc_dev_test.id
-  tags = {
-    "Name" = "SubnetOneNAT-${var.env_name}"
-  }
-}
-/*resource "aws_subnet" "nat_gateway_two" {
-  availability_zone = data.aws_availability_zones.available.names[1]
-  cidr_block = var.nat_gateway_two_cidr
-  vpc_id = aws_vpc.vpc.id
-  tags = {
-    "Name" = "SubnetTwoNAT-${var.env_name}"
-  }
-}*/
+
+//Create an Internet Gateway 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc_dev_test.id
   tags = {
     "Name" = "InternetGateway-${var.env_name}"
   }
 }
-
+//create route table for the Internet Gateway
 resource "aws_route_table" "internet_gateway_rt" {
   vpc_id = aws_vpc.vpc_dev_test.id
   route {
@@ -80,13 +63,36 @@ resource "aws_route_table" "internet_gateway_rt" {
     "Name" = "InternetGatewayRT-${var.env_name}"
   }
 }
-
+//associate the IGW to the first public subnet
 resource "aws_route_table_association" "nat_gateway_one_rt" {
-  subnet_id = aws_subnet.nat_gateway_one.id
+  subnet_id = aws_subnet.public_subnet_one.id
   route_table_id = aws_route_table.internet_gateway_rt.id
+  tags = {
+    "Name" = "RouteTable-${var.env_name}"
+  }
+}
+//Create Elastic IP for the NAT Gateway
+resource "aws_eip" "Nat-Gateway-EIP" {
+  depends_on = [
+    aws_route_table_association. nat_gateway_one_rt
+  ]
+  vpc = true
+  tags = {
+    "Name" = "ElasticIP-${var.env_name}"
+  }
 }
 
-/*resource "aws_route_table_association" "nat_gateway_two_rt" {
-  subnet_id = aws_subnet.nat_gateway_two
-  route_table_id = aws_route_table.internet_gateway_rt.id
-}*/
+resource "aws_subnet" "nat_gateway_one" {
+  depends_on = [
+    aws_eip.Nat-Gateway-EIP
+  ]
+
+  # Allocating the Elastic IP to the NAT Gateway!
+  allocation_id = aws_eip.Nat-Gateway-EIP.id
+  
+  # Associating it in the Public Subnet!
+  subnet_id = aws_subnet.public_subnet_one.id
+  tags = {
+    Name = "Nat-Gateway-${env_name}"
+  }
+}
