@@ -30,7 +30,7 @@ resource "aws_subnet" "public_subnet_two" {
 }
 resource "aws_subnet" "private_subnet_one" {
   availability_zone = data.aws_availability_zones.available.names[0]
-  cidr_block = var.subnet_one_cidr
+  cidr_block = var.private_subnet_one_cidr
   vpc_id = aws_vpc.vpc_dev_test.id
   tags = {
     "Name" = "PrivateSubnetOne-${var.env_name}"
@@ -38,7 +38,7 @@ resource "aws_subnet" "private_subnet_one" {
 }
 resource "aws_subnet" "private_subnet_two" {
   availability_zone = data.aws_availability_zones.available.names[1]
-  cidr_block = var.subnet_two_cidr
+  cidr_block = var.private_subnet_two_cidr
   vpc_id = aws_vpc.vpc_dev_test.id
   tags = {
     "Name" = "PrivateSubnetTwo-${var.env_name}"
@@ -59,7 +59,7 @@ resource "aws_route_table" "internet_gateway_rt" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.internet_gateway.id
   }
-    tags = {
+  tags = {
     "Name" = "InternetGatewayRT-${var.env_name}"
   }
 }
@@ -67,9 +67,7 @@ resource "aws_route_table" "internet_gateway_rt" {
 resource "aws_route_table_association" "nat_gateway_one_rt" {
   subnet_id = aws_subnet.public_subnet_one.id
   route_table_id = aws_route_table.internet_gateway_rt.id
-  tags = {
-    "Name" = "RouteTable-${var.env_name}"
-  }
+
 }
 //Create Elastic IP for the NAT Gateway
 resource "aws_eip" "Nat-Gateway-EIP" {
