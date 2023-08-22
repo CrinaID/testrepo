@@ -4,11 +4,11 @@ variable "test_cidr" {
 }
 variable "test_public_subnet_one" {
     type = string
-    default = "172.0.0.0/12"
+    default = "10.11.4.0/24"
 }
 variable "test_public_subnet_two" {
     type = string
-    default = "172.0.1.0/12"
+    default = "10.11.3.0/24"
 }
 variable "test_private_subnet_one" {
     type = string
