@@ -18,6 +18,8 @@ variable "dev_private_subnet_two" {
     type = string
     default = "10.10.4.0/24"
 }
+variable "dev_public_subnet_three" {}
+variable "dev_private_subnet_three" {}
 variable "dev_env_name"   {
     type = string
     default = "DevEnv"
