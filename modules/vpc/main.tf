@@ -82,7 +82,7 @@ resource "aws_route_table" "internet_gateway_rt" {
 }
 
 resource "aws_route_table_association" "nat_gateway_one_rt" {
-  subnet_id = aws_subnet.nat_gateway_one
+  subnet_id = aws_subnet.nat_gateway_one.id
   route_table_id = aws_route_table.internet_gateway_rt.id
 }
 
