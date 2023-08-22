@@ -25,7 +25,15 @@ resource "aws_subnet" "public_subnet_two" {
   cidr_block = var.public_subnet_two_cidr
   vpc_id = aws_vpc.vpc_dev_test.id
   tags = {
-    "Name" = "PublicSubnetOne-${var.env_name}"
+    "Name" = "PublicSubnetTwo-${var.env_name}"
+  }
+}
+resource "aws_subnet" "public_subnet_three" {
+  availability_zone = data.aws_availability_zones.available.names[2]
+  cidr_block = var.public_subnet_three_cidr
+  vpc_id = aws_vpc.vpc_dev_test.id
+  tags = {
+    "Name" = "PublicSubnetThree-${var.env_name}"
   }
 }
 resource "aws_subnet" "private_subnet_one" {
@@ -44,7 +52,14 @@ resource "aws_subnet" "private_subnet_two" {
     "Name" = "PrivateSubnetTwo-${var.env_name}"
   }
 }
-
+resource "aws_subnet" "private_subnet_three" {
+  availability_zone = data.aws_availability_zones.available.names[2]
+  cidr_block = var.private_subnet_three_cidr
+  vpc_id = aws_vpc.vpc_dev_test.id
+  tags = {
+    "Name" = "PrivateSubnetThree-${var.env_name}"
+  }
+}
 //Create an Internet Gateway 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc_dev_test.id

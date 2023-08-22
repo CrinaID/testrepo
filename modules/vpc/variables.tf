@@ -4,8 +4,9 @@ variable "cidr_vpc" {
 }
 variable "public_subnet_one_cidr" {}
 variable "public_subnet_two_cidr" {}
+variable "public_subnet_three_cidr" {}
 variable "private_subnet_one_cidr" {}
 variable "private_subnet_two_cidr" {}
-
+variable "private_subnet_three_cidr" {}
 
 variable "env_name"{}
