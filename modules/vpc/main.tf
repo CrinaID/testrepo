@@ -18,7 +18,7 @@ resource "aws_subnet" "public_subnet" {
   cidr_block = each.value
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
-    Name = "PublicSubnet${count.index}-${var.env_name}"
+    Name = "PublicSubnet${var.public_subnets[index]}-${var.env_name}"
   }
 }
 
@@ -27,7 +27,7 @@ resource "aws_subnet" "private_subnet" {
   cidr_block = each.value
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
-    Name = "PrivateSubnet${count.index}-${var.env_name}"
+    Name = "PrivateSubnet${var.private_subnets[index]}-${var.env_name}"
   }
 }
 
@@ -125,7 +125,7 @@ resource "aws_nat_gateway" "nat_gateway_one" {
   allocation_id = aws_eip.Nat-Gateway-EIP.id
   
   # Associating it in the Public Subnet!
-  subnet_id = aws_subnet.public_subnet_one.id
+  subnet_id = aws_subnet.public_subnets[0].id
   tags = {
     Name = "NatGateway-${var.env_name}"
   }
