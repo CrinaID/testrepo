@@ -18,7 +18,7 @@ resource "aws_subnet" "public_subnet" {
   cidr_block = each.value
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
-    Name = "PublicSubnet${var.public_subnets[index]}-${var.env_name}"
+    Name = "PublicSubnet${index(var.public_subnets, each.value) +1}-${var.env_name}"
   }
 }
 
@@ -27,7 +27,7 @@ resource "aws_subnet" "private_subnet" {
   cidr_block = each.value
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
-    Name = "PrivateSubnet${var.private_subnets[index]}-${var.env_name}"
+    Name = "PrivateSubnet${index(var.private_subnets, each.value) +1}-${var.env_name}"
   }
 }
 
@@ -101,7 +101,7 @@ resource "aws_route_table" "internet_gateway_rt" {
 }
 //associate the IGW to the first public subnet
 resource "aws_route_table_association" "nat_gateway_one_rt" {
-  subnet_id = aws_subnet.public_subnet_one.id
+  subnet_id = aws_subnet.public_subnets[0].id
   route_table_id = aws_route_table.internet_gateway_rt.id
 
 }
