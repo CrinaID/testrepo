@@ -12,7 +12,26 @@ resource "aws_vpc" "vpc_dev_test" {
 }
 
 data "aws_availability_zones" "available" {}
-resource "aws_subnet" "public_subnet_one" {
+
+resource "aws_subnet" "public_subnet" {
+  for_each = toset(var.public_subnets)
+  cidr_block = each.value
+  vpc_id   = aws_vpc.vpc_dev_test.id
+  tags = {
+    Name = "PublicSubnet${count.index}-${var.env_name}"
+  }
+}
+
+resource "aws_subnet" "private_subnet" {
+  for_each = toset(var.private_subnets)
+  cidr_block = each.value
+  vpc_id   = aws_vpc.vpc_dev_test.id
+  tags = {
+    Name = "PrivateSubnet${count.index}-${var.env_name}"
+  }
+}
+
+/*resource "aws_subnet" "public_subnet_one" {
   availability_zone = data.aws_availability_zones.available.names[0]
   cidr_block = var.public_subnet_one_cidr
   vpc_id = aws_vpc.vpc_dev_test.id
@@ -20,6 +39,8 @@ resource "aws_subnet" "public_subnet_one" {
     "Name" = "PublicSubnetOne-${var.env_name}"
   }
 }
+
+
 resource "aws_subnet" "public_subnet_two" {
   availability_zone = data.aws_availability_zones.available.names[1]
   cidr_block = var.public_subnet_two_cidr
@@ -59,7 +80,7 @@ resource "aws_subnet" "private_subnet_three" {
   tags = {
     "Name" = "PrivateSubnetThree-${var.env_name}"
   }
-}
+}*/
 //Create an Internet Gateway 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc_dev_test.id

@@ -1,11 +1,7 @@
-module "vpcmodule"{
+module "testmodule"{
     source = "../modules/vpc"
     cidr_vpc = var.test_cidr
-    public_subnet_one_cidr = var.test_public_subnet_one
-    public_subnet_two_cidr = var.test_public_subnet_two
-    public_subnet_three_cidr = var.test_public_subnet_three
-    private_subnet_one_cidr = var.test_private_subnet_one
-    private_subnet_two_cidr = var.test_private_subnet_two
-    private_subnet_three_cidr = var.test_private_subnet_three
+    public_subnets = ["10.11.1.0/24", "10.11.2.0/24", "10.11.3.0/24"]
+    private_subnets = ["10.11.4.0/24", "10.11.5.0/24, "10.11.6.0/24"] 
     env_name = var.test_env_name
 }
