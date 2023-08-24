@@ -4,4 +4,7 @@ variable "cidr_vpc" {
 }
 variable "public_subnets" {}
 variable "private_subnets" {}
+variable "publicsub" {
+    default = output.publicsubnets[0]
+}
 variable "env_name"{}
