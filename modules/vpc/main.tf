@@ -81,3 +81,8 @@ resource "aws_nat_gateway" "nat_gateway_one" {
     Name = "NatGateway-${var.env_name}"
   }
 }
+
+output "publicsubnets"{
+    description = "ids of public subnets"
+    value = values(aws_subnet.public_subnets)[*].id
+} 
