@@ -8,6 +8,9 @@ variable "private_subnets" {
 variable "public_subnets" { 
     default = ["10.10.1.0/24", "10.10.2.0/24"]
 }
+variable "publicsub" {
+    default = module.vpc.publicsubnets[0]
+}
 variable "dev_env_name"   {
     type = string
     default = "DevEnv"

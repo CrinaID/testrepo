@@ -52,7 +52,7 @@ resource "aws_route_table" "internet_gateway_rt" {
 }
 //associate the IGW to the first public subnet
 resource "aws_route_table_association" "nat_gateway_one_rt" {
-  subnet_id = output.publicsubnets[0].id
+  subnet_id = var.publicsub
   route_table_id = aws_route_table.internet_gateway_rt.id
 
 }
