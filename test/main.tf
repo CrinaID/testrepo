@@ -1,4 +1,4 @@
-module "testmodule"{
+module "vpcmodule"{
     source = "../modules/vpc"
     cidr_vpc = var.test_cidr
     public_subnets = var.public_subnets
