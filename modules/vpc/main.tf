@@ -14,11 +14,10 @@ resource "aws_vpc" "vpc_dev_test" {
 data "aws_availability_zones" "azs" {}
 
 resource "aws_subnet" "public_subnets" {
-  count = "${length(data.aws_availability_zones.available.names)}"
+  
   for_each = toset(var.public_subnets)
   cidr_block = each.value
-  
-  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
+
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
     Name = "PublicSubnet${index(var.public_subnets, each.value) +1}-${var.env_name}"
@@ -26,10 +25,9 @@ resource "aws_subnet" "public_subnets" {
 }
 
 resource "aws_subnet" "private_subnets" {
-  count = "${length(data.aws_availability_zones.available.names)}"
+  
   for_each = toset(var.private_subnets)
   cidr_block = each.value
-  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
     Name = "PrivateSubnet${index(var.private_subnets, each.value) +1}-${var.env_name}"
