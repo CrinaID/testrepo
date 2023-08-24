@@ -13,6 +13,7 @@ resource "aws_vpc" "vpc_dev_test" {
 
 data "aws_availability_zones" "available" {}
 
+
 resource "aws_subnet" "public_subnets" {
   for_each = toset(var.public_subnets)
   cidr_block = each.value
@@ -31,56 +32,6 @@ resource "aws_subnet" "private_subnets" {
   }
 }
 
-/*resource "aws_subnet" "public_subnet_one" {
-  availability_zone = data.aws_availability_zones.available.names[0]
-  cidr_block = var.public_subnet_one_cidr
-  vpc_id = aws_vpc.vpc_dev_test.id
-  tags = {
-    "Name" = "PublicSubnetOne-${var.env_name}"
-  }
-}
-
-
-resource "aws_subnet" "public_subnet_two" {
-  availability_zone = data.aws_availability_zones.available.names[1]
-  cidr_block = var.public_subnet_two_cidr
-  vpc_id = aws_vpc.vpc_dev_test.id
-  tags = {
-    "Name" = "PublicSubnetTwo-${var.env_name}"
-  }
-}
-resource "aws_subnet" "public_subnet_three" {
-  availability_zone = data.aws_availability_zones.available.names[2]
-  cidr_block = var.public_subnet_three_cidr
-  vpc_id = aws_vpc.vpc_dev_test.id
-  tags = {
-    "Name" = "PublicSubnetThree-${var.env_name}"
-  }
-}
-resource "aws_subnet" "private_subnet_one" {
-  availability_zone = data.aws_availability_zones.available.names[0]
-  cidr_block = var.private_subnet_one_cidr
-  vpc_id = aws_vpc.vpc_dev_test.id
-  tags = {
-    "Name" = "PrivateSubnetOne-${var.env_name}"
-  }
-}
-resource "aws_subnet" "private_subnet_two" {
-  availability_zone = data.aws_availability_zones.available.names[1]
-  cidr_block = var.private_subnet_two_cidr
-  vpc_id = aws_vpc.vpc_dev_test.id
-  tags = {
-    "Name" = "PrivateSubnetTwo-${var.env_name}"
-  }
-}
-resource "aws_subnet" "private_subnet_three" {
-  availability_zone = data.aws_availability_zones.available.names[2]
-  cidr_block = var.private_subnet_three_cidr
-  vpc_id = aws_vpc.vpc_dev_test.id
-  tags = {
-    "Name" = "PrivateSubnetThree-${var.env_name}"
-  }
-}*/
 //Create an Internet Gateway 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc_dev_test.id
