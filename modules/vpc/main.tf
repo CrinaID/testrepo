@@ -13,7 +13,7 @@ resource "aws_vpc" "vpc_dev_test" {
 
 data "aws_availability_zones" "available" {}
 
-resource "aws_subnet" "public_subnet" {
+resource "aws_subnet" "public_subnets" {
   for_each = toset(var.public_subnets)
   cidr_block = each.value
   vpc_id   = aws_vpc.vpc_dev_test.id
@@ -22,7 +22,7 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-resource "aws_subnet" "private_subnet" {
+resource "aws_subnet" "private_subnets" {
   for_each = toset(var.private_subnets)
   cidr_block = each.value
   vpc_id   = aws_vpc.vpc_dev_test.id
@@ -101,7 +101,7 @@ resource "aws_route_table" "internet_gateway_rt" {
 }
 //associate the IGW to the first public subnet
 resource "aws_route_table_association" "nat_gateway_one_rt" {
-  subnet_id = aws_subnet.public_subnets[0].id
+  subnet_id = aws_subnet.public_subnets[].id
   route_table_id = aws_route_table.internet_gateway_rt.id
 
 }
