@@ -52,7 +52,7 @@ resource "aws_route_table" "internet_gateway_rt" {
 }
 //associate the IGW to the first public subnet
 resource "aws_route_table_association" "nat_gateway_one_rt" {
-  subnet_id = var.publicsub
+  subnet_id = values(aws_subnet.public_subnets)[0].id
   route_table_id = aws_route_table.internet_gateway_rt.id
 
 }
@@ -76,13 +76,9 @@ resource "aws_nat_gateway" "nat_gateway_one" {
   allocation_id = aws_eip.Nat-Gateway-EIP.id
   
   # Associating it in the Public Subnet!
-  subnet_id = aws_subnet.public_subnets[0].id
+  subnet_id = values(aws_subnet.public_subnets)[0].id
   tags = {
     Name = "NatGateway-${var.env_name}"
   }
 }
 
-output "publicsubnets"{
-    description = "ids of public subnets"
-    value = values(aws_subnet.public_subnets)[*].id
-} 
