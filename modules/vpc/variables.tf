@@ -2,10 +2,11 @@ variable "cidr_vpc" {
   type = string
   default = "10.1.0.0/16"
 }
-//variable "public_subnets" {}
-//variable "private_subnets" {}
+variable "public_subnets" {}
+variable "private_subnets" {}
 variable "env_name"{}
 
+  
 
 /*variable "subnet_map" {
   description = "Map for subnets - azs - cidr blocks"

@@ -14,10 +14,9 @@ resource "aws_vpc" "vpc_dev_test" {
 data "aws_availability_zones" "available" {}
 //condition ? true_val : false_val
 resource "aws_subnet" "public_subnets" {
-  count = "${length(data.aws_availability_zones.available.names)}"
-  countDev = "1"
-  countTest = "2"
-  cidr_block = var.env_name == "DevEnv" ?  "10.10.${1+countDev.index}.0/24" : "10.11.${1+countTest.index}.0/24"
+  count = "${length(var.public_subnets)}"
+
+  cidr_block = var.public_subnets[count.index]
   availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
@@ -27,10 +26,8 @@ resource "aws_subnet" "public_subnets" {
 
 resource "aws_subnet" "private_subnets" {
   
-  count = "${length(data.aws_availability_zones.available.names)}"
-  countDev = "1"
-  countTest = "2"
-  cidr_block = var.env_name == "DevEnv" ?  "10.10.${1+countDev.index}.0/24" : "10.11.${1+countTest.index}.0/24"
+  count = "${length(var.private_subnets)}"
+  cidr_block = var.private_subnets[count.index]
   availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
