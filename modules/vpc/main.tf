@@ -11,26 +11,27 @@ resource "aws_vpc" "vpc_dev_test" {
   }
 }
 
-data "aws_availability_zones" "azs" {}
-
+data "aws_availability_zones" "available" {}
+//condition ? true_val : false_val
 resource "aws_subnet" "public_subnets" {
-  
-  for_each = toset(var.public_subnets)
-  cidr_block = each.value
+  count = "${length(var.public_subnets)}"
 
+  cidr_block = var.public_subnets[count.index]
+  availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
-    Name = "PublicSubnet${index(var.public_subnets, each.value) +1}-${var.env_name}"
+    Name = "PublicSubnet${1+count.index}-${var.env_name}"
   }
 }
 
 resource "aws_subnet" "private_subnets" {
   
-  for_each = toset(var.private_subnets)
-  cidr_block = each.value
+  count = "${length(var.private_subnets)}"
+  cidr_block = var.private_subnets[count.index]
+  availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
-    Name = "PrivateSubnet${index(var.private_subnets, each.value) +1}-${var.env_name}"
+    Name = "PrivateSubnet${1+count.index}-${var.env_name}"
   }
 }
 
@@ -54,7 +55,7 @@ resource "aws_route_table" "internet_gateway_rt" {
 }
 //associate the IGW to the first public subnet
 resource "aws_route_table_association" "nat_gateway_one_rt" {
-  subnet_id = values(aws_subnet.public_subnets)[0].id
+  subnet_id = aws_subnet.public_subnets[0].id
   route_table_id = aws_route_table.internet_gateway_rt.id
 
 }
@@ -78,7 +79,7 @@ resource "aws_nat_gateway" "nat_gateway_one" {
   allocation_id = aws_eip.Nat-Gateway-EIP.id
   
   # Associating it in the Public Subnet!
-  subnet_id = values(aws_subnet.public_subnets)[0].id
+  subnet_id = aws_subnet.public_subnets[0].id
   tags = {
     Name = "NatGateway-${var.env_name}"
   }
