@@ -12,3 +12,7 @@ variable "test_env_name"   {
     type = string
     default = "TestEnv"
 }
+variable "project_code" {
+    type = string
+    default = "dm"
+}
