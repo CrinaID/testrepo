@@ -11,7 +11,7 @@ resource "aws_vpc" "vpc_dev_test" {
   }
 }
 
-data "aws_availability_zones" "azs" {}
+data "aws_availability_zones" "available" {}
 //condition ? true_val : false_val
 resource "aws_subnet" "public_subnets" {
   count = "${length(data.aws_availability_zones.available.names)}"
