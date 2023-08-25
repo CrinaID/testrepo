@@ -11,7 +11,7 @@ variable "public_subnets" {
 
 variable "dev_env_name"   {
     type = string
-    default = "DevEnv"
+    default = "dev"
 }
 variable "project_code" {
     type = string
