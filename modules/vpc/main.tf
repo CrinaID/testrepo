@@ -12,12 +12,11 @@ resource "aws_vpc" "vpc_dev_test" {
 }
 
 data "aws_availability_zones" "azs" {}
-
+//condition ? true_val : false_val
 resource "aws_subnet" "public_subnets" {
-  
-  for_each = toset(var.public_subnets)
-  cidr_block = each.value
-
+  count = "${length(data.aws_availability_zones.available.names)}"
+  cidr_block = var.env_name == "DevEnv" ?  "10.10.${1+count.index}.0/24" : "10.11.${1+count.index}.0/24"
+  availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
     Name = "PublicSubnet${index(var.public_subnets, each.value) +1}-${var.env_name}"
@@ -26,8 +25,9 @@ resource "aws_subnet" "public_subnets" {
 
 resource "aws_subnet" "private_subnets" {
   
-  for_each = toset(var.private_subnets)
-  cidr_block = each.value
+  count = "${length(data.aws_availability_zones.available.names)}"
+  cidr_block = var.env_name == "DevEnv" ?  "10.10.${1+count.index}.0/24" : "10.11.${1+count.index}.0/24"
+  availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
     Name = "PrivateSubnet${index(var.private_subnets, each.value) +1}-${var.env_name}"
