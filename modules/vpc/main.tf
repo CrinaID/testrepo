@@ -26,7 +26,7 @@ resource "aws_subnet" "public_subnets" {
 resource "aws_subnet" "private_subnets" {
   
   count = "${length(data.aws_availability_zones.available.names)}"
-  cidr_block = var.env_name == "DevEnv" ?  "10.10.${1+count.index}.0/24" : "10.11.${1+count.index}.0/24"
+  cidr_block = var.env_name == "DevEnv" ?  "10.10.${count.index}.0/24" : "10.11.${1+count.index}.0/24"
   availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
