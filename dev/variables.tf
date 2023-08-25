@@ -13,4 +13,7 @@ variable "dev_env_name"   {
     type = string
     default = "DevEnv"
 }
-
+variable "project_code" {
+    type = string
+    default = "dm"
+}
