@@ -19,7 +19,7 @@ resource "aws_subnet" "public_subnets" {
   availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
-    Name = "PublicSubnet${index(var.public_subnets, each.value) +1}-${var.env_name}"
+    Name = "PublicSubnet${1+count.index}-${var.env_name}"
   }
 }
 
@@ -30,7 +30,7 @@ resource "aws_subnet" "private_subnets" {
   availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
   vpc_id   = aws_vpc.vpc_dev_test.id
   tags = {
-    Name = "PrivateSubnet${index(var.private_subnets, each.value) +1}-${var.env_name}"
+    Name = "PrivateSubnet${1+count.index}-${var.env_name}"
   }
 }
 
