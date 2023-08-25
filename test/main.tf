@@ -4,4 +4,6 @@ module "vpcmodule"{
     public_subnets = var.public_subnets
     private_subnets = var.private_subnets
     env_name = var.test_env_name
+    project_code = var.project_code
+
 }
