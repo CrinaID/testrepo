@@ -17,3 +17,11 @@ variable "project_code" {
     type = string
     default = "dm"
 }
+variable "cluster_name" {
+    type = string
+    default = "dm-eks-dev"
+}
+variable "cluster_version" {
+    type = string
+    default = "1.25"
+}
