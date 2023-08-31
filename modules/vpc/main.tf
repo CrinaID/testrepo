@@ -140,8 +140,10 @@ resource "aws_eks_cluster" "cluster" {
     endpoint_private_access = false
     endpoint_public_access  = true
     public_access_cidrs     = ["0.0.0.0/0"]
-
-    subnet_ids = [aws_subnet.private_subnets[*].id]
+    count = "${length(var.private_subnets)}"
+    subnet_ids = [
+      aws_subnet.private_subnets[count.index].id
+    ]
   }
 
   depends_on = [aws_iam_role_policy_attachment.amazon-eks-cluster-policy]
