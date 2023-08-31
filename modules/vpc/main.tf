@@ -1,5 +1,14 @@
+
 provider "aws" {
   region = "eu-central-1"
+}
+
+terraform {
+  backend "s3" {
+    bucket = "mybucket"
+    key    = "path/to/my/key"
+    region = "us-east-1"
+  }
 }
 
 resource "aws_vpc" "vpc_dev_test" {
@@ -167,8 +176,11 @@ resource "aws_eks_fargate_profile" "kube-system" {
 
   # These subnets must have the following resource tag: 
   # kubernetes.io/cluster/<CLUSTER_NAME>.
+  count = "${length(var.private_subnets)}"
+
+
   subnet_ids = [
-    aws_subnet.private_subnets[*].id
+    aws_subnet.private_subnets[count.index].id
   ]
 
   selector {
