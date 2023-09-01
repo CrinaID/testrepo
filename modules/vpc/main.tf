@@ -142,8 +142,8 @@ resource "aws_eks_cluster" "cluster" {
     public_access_cidrs     = ["0.0.0.0/0"]
     
     subnet_ids = [
-      aws_subnet.private_subnets.id,
-      aws_subnet.public_subnets.id
+      aws_subnet.private_subnets[count.index],
+      aws_subnet.public_subnets[count.index]
     ]
   }
 
@@ -180,7 +180,7 @@ resource "aws_eks_fargate_profile" "kube-system" {
   # These subnets must have the following resource tag: 
   # kubernetes.io/cluster/<CLUSTER_NAME>.
   subnet_ids = [
-    aws_subnet.private_subnets.id
+    aws_subnet.private_subnets[count.index]
   ]
 
   selector {
