@@ -5,9 +5,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "mybucket"
-    key    = "path/to/my/key"
-    region = "us-east-1"
+    bucket = "dm-gen-configuration"
+    key    = "/"
+    region = "eu-central-1"
   }
 }
 
@@ -142,8 +142,8 @@ resource "aws_eks_cluster" "cluster" {
     public_access_cidrs     = ["0.0.0.0/0"]
     
     subnet_ids = [
-      output.private_subnets_id,
-      output.public_subnets_id
+      output.private_subnets_ids,
+      output.public_subnets_ids
     ]
   }
 
@@ -180,7 +180,7 @@ resource "aws_eks_fargate_profile" "kube-system" {
   # These subnets must have the following resource tag: 
   # kubernetes.io/cluster/<CLUSTER_NAME>.
   subnet_ids = [
-    aws_subnet.private_subnets[count.index]
+    output.private_subnets_ids
   ]
 
   selector {
