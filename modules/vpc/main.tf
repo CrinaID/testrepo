@@ -11,7 +11,7 @@ terraform {
   }
 }
 
-resource "aws_vpc" "vpc_dev_test" {
+resource "aws_vpc" "vpc_dm_eks" {
   cidr_block = var.cidr_vpc
   enable_dns_hostnames = true
   enable_dns_support = true
@@ -134,7 +134,7 @@ resource "aws_eks_cluster" "cluster" {
   name     = var.cluster_name
   version  = var.cluster_version
   role_arn = aws_iam_role.eks-cluster.arn
-  count = "${length(var.private_subnets)}"
+  
   vpc_config {
 
     endpoint_private_access = false
@@ -142,8 +142,8 @@ resource "aws_eks_cluster" "cluster" {
     public_access_cidrs     = ["0.0.0.0/0"]
     
     subnet_ids = [
-      output.private_subnet_ids,
-      output.public_subnet_ids
+      aws_subnet.private_subnets,
+      aws_subnet.public_subnets
     ]
   }
 
@@ -180,7 +180,7 @@ resource "aws_eks_fargate_profile" "kube-system" {
   # These subnets must have the following resource tag: 
   # kubernetes.io/cluster/<CLUSTER_NAME>.
   subnet_ids = [
-    output.private_subnet_ids
+    aws_subnet.private_subnets
   ]
 
   selector {
