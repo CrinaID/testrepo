@@ -1,4 +1,4 @@
-variable "dev_cidr" {
+variable "vpc_cidr" {
     type = string 
     default = "10.10.0.0/16"
 }    
@@ -16,4 +16,12 @@ variable "dev_env_name"   {
 variable "project_code" {
     type = string
     default = "dm"
+}
+variable "cluster_name" {
+    type = string
+    default = "dm-eks-dev"
+}
+variable "cluster_version" {
+    type = string
+    default = "1.25"
 }
