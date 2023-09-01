@@ -27,7 +27,7 @@ resource "aws_subnet" "public_subnets" {
 
   cidr_block = var.public_subnets[count.index]
   availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
-  vpc_id   = aws_vpc.vpc_dev_test.id
+  vpc_id   = aws_vpc.vpc_dm_eks.id
   tags = {
     Name = "${var.project_code}-${var.env_name}-publicsub-${1+count.index}"
   }
@@ -38,7 +38,7 @@ resource "aws_subnet" "private_subnets" {
   count = "${length(var.private_subnets)}"
   cidr_block = var.private_subnets[count.index]
   availability_zone= "${data.aws_availability_zones.available.names[count.index]}"
-  vpc_id   = aws_vpc.vpc_dev_test.id
+  vpc_id   = aws_vpc.vpc_dm_eks.id
   tags = {
     Name = "${var.project_code}-${var.env_name}-privatesub-${1+count.index}"
   }
@@ -46,14 +46,14 @@ resource "aws_subnet" "private_subnets" {
 
 //Create an Internet Gateway 
 resource "aws_internet_gateway" "internet_gateway" {
-  vpc_id = aws_vpc.vpc_dev_test.id
+  vpc_id = aws_vpc.vpc_dm_eks.id
   tags = {
     "Name" = "${var.project_code}-${var.env_name}-igw"
   }
 }
 //create route table for the Internet Gateway
 resource "aws_route_table" "internet_gateway_rt" {
-  vpc_id = aws_vpc.vpc_dev_test.id
+  vpc_id = aws_vpc.vpc_dm_eks.id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.internet_gateway.id
