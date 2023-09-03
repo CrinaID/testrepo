@@ -1,6 +1,6 @@
 output "private_subnet_ids" {
-  value = module.vpcmodule.private_subnets["*"].id
+  value =var.private_subnets["*"].id
 }
 output "public_subnet_ids" {
-  value = module.vpcmodule.public_subnets["*"].id
+  value = var.public_subnets["*"].id
 }
