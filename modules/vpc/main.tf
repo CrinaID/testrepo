@@ -146,7 +146,7 @@ resource "aws_eks_cluster" "cluster" {
     
     subnet_ids = [
         aws_subnet.private_subnets[0].id,
-        aws_subnet.public_subnets[0].id.
+        aws_subnet.public_subnets[0].id,
         aws_subnet.private_subnets[1].id,
         aws_subnet.public_subnets[1].id
     ]
