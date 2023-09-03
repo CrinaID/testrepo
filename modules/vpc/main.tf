@@ -140,10 +140,10 @@ resource "aws_eks_cluster" "cluster" {
     endpoint_private_access = false
     endpoint_public_access  = true
     public_access_cidrs     = ["0.0.0.0/0"]
-    
+    count = "${length(aws_subnet.private_subnets)}"
     subnet_ids = [
-        aws_subnet.private_subnets[*].id,
-        aws_subnet.public_subnets[*].id
+        aws_subnet.private_subnets[count.index].id,
+        aws_subnet.public_subnets[count.index].id
     ]
   }
 
@@ -177,9 +177,9 @@ resource "aws_eks_fargate_profile" "kube-system" {
   fargate_profile_name   = "kube-system"
   pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
 
-
+  count = "${length(aws_subnet.private_subnets)}"
   subnet_ids = [
-    aws_subnet.private_subnets[*].id
+    aws_subnet.private_subnets[count.index].id
   ]
 
   selector {
