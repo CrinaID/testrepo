@@ -21,7 +21,9 @@ resource "aws_vpc" "vpc_dm_eks" {
 }
 
 data "aws_availability_zones" "available" {}
-//condition ? true_val : false_val
+
+// What if the number of subnets differs from the number of availability zones?
+// Code needs to be refactored/improved for private and public subnet resources!
 resource "aws_subnet" "public_subnets" {
   count = "${length(var.public_subnets)}"
 
@@ -134,7 +136,7 @@ resource "aws_eks_cluster" "cluster" {
   name     = var.cluster_name
   version  = var.cluster_version
   role_arn = aws_iam_role.eks-cluster.arn
-  count = "${length(aws_subnet.private_subnets)}"
+  //count = "${length(aws_subnet.private_subnets)}"
   
   vpc_config {
 
@@ -143,8 +145,10 @@ resource "aws_eks_cluster" "cluster" {
     public_access_cidrs     = ["0.0.0.0/0"]
     
     subnet_ids = [
-        aws_subnet.private_subnets[count.index].id,
-        aws_subnet.public_subnets[count.index].id
+        aws_subnet.private_subnets[0].id,
+        aws_subnet.public_subnets[0].id.
+        aws_subnet.private_subnets[1].id,
+        aws_subnet.public_subnets[1].id
     ]
   }
 
