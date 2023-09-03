@@ -1,6 +1,6 @@
 output "private_subnet_ids" {
-  value = module.vpc.aws_subnet.private_subnets["*"].id
+  value = module.vpcmodule.aws_subnet.private_subnets["*"].id
 }
 output "public_subnet_ids" {
-  value = module.vpc.aws_subnet.public_subnets["*"].id
+  value = module.vpcmodule.aws_subnet.public_subnets["*"].id
 }
