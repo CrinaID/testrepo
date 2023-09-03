@@ -134,6 +134,7 @@ resource "aws_eks_cluster" "cluster" {
   name     = var.cluster_name
   version  = var.cluster_version
   role_arn = aws_iam_role.eks-cluster.arn
+  count = "${length(aws_subnet.private_subnets)}"
   
   vpc_config {
 
