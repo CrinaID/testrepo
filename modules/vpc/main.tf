@@ -174,7 +174,7 @@ resource "aws_iam_role_policy_attachment" "eks-fargate-profile" {
 }
 
 resource "aws_eks_fargate_profile" "kube-system" {
-  cluster_name           = aws_eks_cluster.cluster.name
+  cluster_name           = aws_eks_cluster.cluster[count.index].name
   fargate_profile_name   = "kube-system"
   pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
 
