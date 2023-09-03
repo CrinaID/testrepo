@@ -141,7 +141,7 @@ resource "aws_eks_cluster" "cluster" {
     endpoint_private_access = false
     endpoint_public_access  = true
     public_access_cidrs     = ["0.0.0.0/0"]
-    count = "${length(aws_subnet.private_subnets)}"
+    
     subnet_ids = [
         aws_subnet.private_subnets[count.index].id,
         aws_subnet.public_subnets[count.index].id
