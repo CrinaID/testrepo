@@ -182,7 +182,8 @@ resource "aws_eks_managed_node_groups" "managed_eks" {
     min_size     = 1
     max_size     = 3
     desired_size = 1
-
+    vpc_id = aws_vpc.vpc-dm-eks.id
+    subnet_ids = [aws_subnet.private_subnets[0], aws_subnet.private_subnets[1]]
     instance_types = ["t2.micro"]
     capacity_type  = "SPOT"
 
