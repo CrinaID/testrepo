@@ -177,19 +177,8 @@ resource "aws_iam_role_policy_attachment" "eks-fargate-profile" {
   role       = aws_iam_role.eks-fargate-profile.name
 }
 # EKS Managed Node Group(s)
-  eks_managed_node_group_defaults = {
-    ami_type       = "AL2_x86_64"
-    instance_types = ["t2.micro"]
 
-
-    /*iam_role_additional_policies = {
-      additional = aws_iam_policy.additional.arn
-    }
-  */
-  }
-  eks_managed_node_groups = {
-
-    managed_eks_group = {
+  resource "eks_managed_node_groups" "managed_eks" {
       min_size     = 1
       max_size     = 3
       desired_size = 1
@@ -209,7 +198,7 @@ resource "aws_iam_role_policy_attachment" "eks-fargate-profile" {
         ExtraTag = "dm-eks-managed-group"
       }
     }
-  }
+  
 
 resource "aws_eks_fargate_profile" "kube-system" {
   cluster_name           = aws_eks_cluster.cluster.name
