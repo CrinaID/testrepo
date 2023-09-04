@@ -178,7 +178,7 @@ resource "aws_iam_role_policy_attachment" "eks-fargate-profile" {
 }
 # EKS Managed Node Group(s)
 
-resource "aws_eks_managed_node_groups" "managed_eks" {
+resource "aws_eks_managed_node_group" "managed_eks" {
     min_size     = 1
     max_size     = 3
     desired_size = 1
