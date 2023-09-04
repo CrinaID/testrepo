@@ -251,7 +251,17 @@ resource "aws_eks_fargate_profile" "staging" {
 }
 
 
-//
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.cluster.identity[0].oidc[0].issuer
+}
+
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.cluster.identity[0].oidc[0].issuer
+}
+
+
 data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
@@ -288,3 +298,32 @@ resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attach" 
 output "aws_load_balancer_controller_role_arn" {
   value = aws_iam_role.aws_load_balancer_controller.arn
 }
+
+provider "helm" {
+  kubernetes {
+    host                   = aws_eks_cluster.cluster.endpoint
+    cluster_ca_certificate = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.cluster.id]
+      command     = "aws"
+    }
+  }
+}
+
+resource "helm_release" "metrics-server" {
+  name = "metrics-server"
+
+  repository = "https://kubernetes-sigs.github.io/metrics-server/"
+  chart      = "metrics-server"
+  namespace  = "kube-system"
+  version    = "3.8.2"
+
+  set {
+    name  = "metrics.enabled"
+    value = false
+  }
+
+  depends_on = [aws_eks_fargate_profile.kube-system]
+}
+
