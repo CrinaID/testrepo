@@ -176,28 +176,41 @@ resource "aws_iam_role_policy_attachment" "eks-fargate-profile" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
   role       = aws_iam_role.eks-fargate-profile.name
 }
+resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role       = aws_iam_role.EKSClusterRole.name
+}
+resource "aws_iam_role_policy_attachment" "AmazonEKSWorkerNodePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.NodeGroupRole.name
+}
+resource "aws_iam_role_policy_attachment" "AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.NodeGroupRole.name
+}
 # EKS Managed Node Group(s)
 
 resource "aws_eks_node_group" "managed_eks" {
-    min_size     = 1
+cluster_name    = aws_eks_cluster.cluster.name
+  node_group_name = "dm_eks_node_group"
+  node_role_arn   = aws_iam_role.eks-cluster.arn
+  //subnet_ids      = flatten( output.private_subnet_ids )
+  subnet_ids = [aws_subnet.private_subnets[0].id, aws_subnet.private_subnets[1].id]
+  scaling_config {
+    desired_size = 2
     max_size     = 3
-    desired_size = 1
-    vpc_id = aws_vpc.vpc-dm-eks.id
-    subnet_ids = [aws_subnet.private_subnets[0], aws_subnet.private_subnets[1]]
-    instance_types = ["t2.micro"]
-    capacity_type  = "SPOT"
+    min_size     = 1
+  }
 
-    taints = {
-      dedicated = {
-        key    = "dedicated"
-        value  = "gpuGroup"
-        effect = "NO_SCHEDULE"
-      }
-    }
+  ami_type       = "AL2_x86_64"
+  instance_types = ["t2.micro"]
+  capacity_type  = "SPOT"
+ 
 
-    tags = {
-      ExtraTag = "dm-eks-managed-group"
-    }
+  depends_on = [
+    aws_iam_role_policy_attachment.AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly
+  ]
   }
   
 
