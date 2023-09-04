@@ -194,7 +194,7 @@ resource "aws_eks_fargate_profile" "kube-system" {
   }
 }
 
-//remove ec2 annotation form CoreDNS deployment
+/*/remove ec2 annotation form CoreDNS deployment
 
 data "aws_eks_cluster_auth" "eks" {
   name = aws_eks_cluster.cluster.id
@@ -229,3 +229,4 @@ EOH
   }
 }
 
+*/
