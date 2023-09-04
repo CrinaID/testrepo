@@ -178,26 +178,26 @@ resource "aws_iam_role_policy_attachment" "eks-fargate-profile" {
 }
 # EKS Managed Node Group(s)
 
-  resource "eks_managed_node_groups" "managed_eks" {
-      min_size     = 1
-      max_size     = 3
-      desired_size = 1
+resource "aws_eks_managed_node_groups" "managed_eks" {
+    min_size     = 1
+    max_size     = 3
+    desired_size = 1
 
-      instance_types = ["t2.micro"]
-      capacity_type  = "SPOT"
+    instance_types = ["t2.micro"]
+    capacity_type  = "SPOT"
 
-      taints = {
-        dedicated = {
-          key    = "dedicated"
-          value  = "gpuGroup"
-          effect = "NO_SCHEDULE"
-        }
-      }
-
-      tags = {
-        ExtraTag = "dm-eks-managed-group"
+    taints = {
+      dedicated = {
+        key    = "dedicated"
+        value  = "gpuGroup"
+        effect = "NO_SCHEDULE"
       }
     }
+
+    tags = {
+      ExtraTag = "dm-eks-managed-group"
+    }
+  }
   
 
 resource "aws_eks_fargate_profile" "kube-system" {
