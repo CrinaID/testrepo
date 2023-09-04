@@ -1,13 +1,13 @@
 
 provider "aws" {
-  region = "eu-central-1"
+  region = "eu-west-1"
 }
 
 terraform {
   backend "s3" {
     bucket = "dm-gen-configuration"
     key    = "/"
-    region = "eu-central-1"
+    region = "eu--1"
   }
 }
 resource "aws_vpc" "vpc_dm_eks" {
