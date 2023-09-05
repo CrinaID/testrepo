@@ -1,4 +1,14 @@
+provider "aws" {
+  region = "eu-north-1"
+}
 
+terraform {
+  backend "s3" {
+    bucket = "dm-gen-configuration"
+    key    = "/"
+    region = "eu-west-1"
+  }
+}
 
 resource "aws_vpc" "vpc_dm_eks" {
   cidr_block = var.cidr_vpc
