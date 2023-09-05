@@ -308,7 +308,7 @@ provider "helm" {
     }
   }
 }
-
+/*
 resource "helm_release" "metrics-server" {
   name = "metrics-server"
 
@@ -324,7 +324,7 @@ resource "helm_release" "metrics-server" {
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
-/*
+*/
 resource "helm_release" "aws-load-balancer-controller" {
   name = "aws-load-balancer-controller"
 
@@ -361,7 +361,7 @@ resource "helm_release" "aws-load-balancer-controller" {
   # EKS Fargate specific
   set {
     name  = "region"
-    value = "eu-west-1"
+    value = "eu-north-1"
   }
 
   set {
@@ -371,4 +371,3 @@ resource "helm_release" "aws-load-balancer-controller" {
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
-*/
