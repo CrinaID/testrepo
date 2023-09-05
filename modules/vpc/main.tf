@@ -159,7 +159,7 @@ resource "aws_eks_cluster" "cluster" {
   
   vpc_config {
 
-    endpoint_private_access = false
+    endpoint_private_access = true
     endpoint_public_access  = true
     public_access_cidrs     = ["0.0.0.0/0"]
     //need to improve this code and not use 0 and 1 
