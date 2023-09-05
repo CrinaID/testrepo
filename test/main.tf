@@ -6,11 +6,6 @@ module "vpcmodule"{
     private_subnets = var.private_subnets
     env_name = var.test_env_name
     project_code = var.project_code
-
-
-}
-module "eksmodule" {
-    source = "../modules/eks"
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
 }
