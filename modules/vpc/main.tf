@@ -203,7 +203,7 @@ resource "aws_eks_fargate_profile" "kube-system" {
   }
 }
 
-/*/remove ec2 annotation form CoreDNS deployment
+//remove ec2 annotation form CoreDNS deployment
 
 data "aws_eks_cluster_auth" "eks" {
   name = aws_eks_cluster.cluster.id
@@ -237,8 +237,6 @@ EOH
     ignore_changes = [triggers]
   }
 }
-
-*/
 
 
 data "tls_certificate" "eks" {
@@ -292,7 +290,7 @@ output "aws_load_balancer_controller_role_arn" {
 provider "helm" {
   kubernetes {
     //config_path = "~/.kube/config"
-    host                   = data.aws_eks_cluster.cluster.endpoint
+    host                   = aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
