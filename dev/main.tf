@@ -1,3 +1,14 @@
+provider "aws" {
+  region = "eu-west-1"
+}
+
+terraform {
+  backend "s3" {
+    bucket = "dm-gen-configuration"
+    key    = "/"
+    region = "eu--1"
+  }
+}
 module "vpcmodule"{
     source = "../modules/vpc"
     
@@ -6,11 +17,9 @@ module "vpcmodule"{
     public_subnets = var.public_subnets
     env_name = var.dev_env_name
     project_code = var.project_code
-
-    //public_subnet_ids = output.public_subnet_ids.value
-    //private_subnet_ids = output.private_subnet_ids.value
-
-
+}
+module "eksmodule" {
+    source = "../modules/eks"
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
 }
