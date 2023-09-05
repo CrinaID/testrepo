@@ -291,17 +291,17 @@ output "aws_load_balancer_controller_role_arn" {
 
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config"
-    /*host                   = aws_eks_cluster.cluster.endpoint
+    //config_path = "~/.kube/config"
+    host                   = aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.cluster.id]
       command     = "aws"
-    }*/
+    }
   }
 }
-/*
+
 resource "helm_release" "metrics-server" {
   name = "metrics-server"
 
@@ -317,7 +317,7 @@ resource "helm_release" "metrics-server" {
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
-*/
+
 resource "helm_release" "aws-load-balancer-controller" {
   name = "aws-load-balancer-controller"
 
