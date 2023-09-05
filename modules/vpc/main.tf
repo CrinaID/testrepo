@@ -194,8 +194,8 @@ resource "aws_eks_fargate_profile" "kube-system" {
 
   //count = "${length(aws_subnet.private_subnets)}"
   subnet_ids = [
-    module.vpcmodule.aws_subnet.private_subnets[0].id,
-    module.vpcmodule.aws_subnet.private_subnets[1].id
+    aws_subnet.private_subnets[0].id,
+    aws_subnet.private_subnets[1].id
   ]
 
   selector {
