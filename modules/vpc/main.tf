@@ -363,4 +363,3 @@ resource "helm_release" "aws-load-balancer-controller" {
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
-*/
