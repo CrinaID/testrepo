@@ -346,10 +346,10 @@ output "aws_load_balancer_controller_role_arn" {
 resource "helm_release" "aws-load-balancer-controller" {
   name = "aws-load-balancer-controller"
 
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
+  repository = "https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/helm/aws-load-balancer-controller/https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/helm/aws-load-balancer-controller/Chart.yaml"
+  
   namespace  = "kube-system"
-  version    = "1.4.1"
+  
 
   set {
     name  = "clusterName"
