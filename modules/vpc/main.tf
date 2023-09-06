@@ -276,8 +276,6 @@ provider "helm" {
   }
 }
 
-
-
 resource "helm_release" "metrics-server" {
   name = "metrics-server"
 
