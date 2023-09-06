@@ -213,7 +213,7 @@ resource "aws_eks_fargate_profile" "kube-system" {
   }
 }
 
-//remove ec2 annotation form CoreDNS deployment
+//remove ec2 annotation from CoreDNS deployment
 
 data "aws_eks_cluster_auth" "eks" {
   name = aws_eks_cluster.cluster.id
@@ -248,7 +248,7 @@ EOH
   }
 }
 
-
+/*
 data "tls_certificate" "eks" {
   url = aws_eks_cluster.cluster.identity[0].oidc[0].issuer
 }
@@ -296,7 +296,7 @@ resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attach" 
 output "aws_load_balancer_controller_role_arn" {
   value = aws_iam_role.aws_load_balancer_controller.arn
 }
-/*
+
 data "aws_eks_cluster_auth" "cluster-auth" {
   depends_on = [aws_eks_cluster.cluster]
   name       = aws_eks_cluster.cluster.name
