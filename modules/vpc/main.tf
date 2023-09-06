@@ -277,17 +277,14 @@ provider "helm" {
 }
 
 resource "helm_release" "metrics-server" {
-  name = "metrics-server"
-
-  repository = "https://kubernetes-sigs.github.io/metrics-server/"
-  chart      = "metrics-server"
+  name       = "metrics-server" 
+  chart      = "https://charts.bitnami.com/bitnami/metrics-server-5.2.0.tgz"
   namespace  = "kube-system"
-  //version    = "3.8.2"
-
-  set {
-    name  = "metrics.enabled"
-    value = true
-  }
+  values = [<<EOF
+  apiService:
+  create: true
+  EOF
+  ] 
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
