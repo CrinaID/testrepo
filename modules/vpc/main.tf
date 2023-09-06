@@ -296,10 +296,12 @@ resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attach" 
 output "aws_load_balancer_controller_role_arn" {
   value = aws_iam_role.aws_load_balancer_controller.arn
 }
+/*
 data "aws_eks_cluster_auth" "cluster-auth" {
   depends_on = [aws_eks_cluster.cluster]
   name       = aws_eks_cluster.cluster.name
 }
+
 provider "helm" {
   kubernetes {
     host                   = aws_eks_cluster.cluster.endpoint
@@ -308,7 +310,7 @@ provider "helm" {
       api_version = "client.authentication.k8s.io/v1beta1"
       args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.cluster.id]
       command     = "aws"
-    }*/
+    }
     token                  = data.aws_eks_cluster_auth.cluster-auth.token
     
   }
@@ -329,7 +331,7 @@ resource "helm_release" "metrics-server" {
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
-*/
+
 resource "helm_release" "aws-load-balancer-controller" {
   name = "aws-load-balancer-controller"
 
@@ -376,3 +378,4 @@ resource "helm_release" "aws-load-balancer-controller" {
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
+*/
