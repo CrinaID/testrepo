@@ -343,8 +343,6 @@ output "aws_load_balancer_controller_role_arn" {
 }
 
 
-/*
-
 resource "helm_release" "aws-load-balancer-controller" {
   name = "aws-load-balancer-controller"
 
@@ -391,4 +389,3 @@ resource "helm_release" "aws-load-balancer-controller" {
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
-*/
