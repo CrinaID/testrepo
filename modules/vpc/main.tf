@@ -279,7 +279,7 @@ provider "helm" {
 resource "helm_release" "metrics-server" {
   name = "metrics-server"
 
-  repository = "https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/"
+  repository = "https://kubernetes-sigs.github.io/metrics-server/"
   chart      = "metrics-server"
   namespace  = "kube-system"
   //version    = "3.8.2"
