@@ -103,22 +103,7 @@ resource "aws_nat_gateway" "nat_gateway_one" {
 }
 
 
-resource "aws_eks_fargate_profile" "staging" {
-  cluster_name           = aws_eks_cluster.cluster.name
-  fargate_profile_name   = "staging"
-  pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
 
-  # These subnets must have the following resource tag: 
-  # kubernetes.io/cluster/<CLUSTER_NAME>.
-  subnet_ids = [
-    aws_subnet.private_subnets[0].id,
-    aws_subnet.private_subnets[1].id
-  ]
-
-  selector {
-    namespace = "staging"
-  }
-}
 //IAM role for EKS - used to make API calls to AWS services
 //i.e. to create managed node pools
 
@@ -213,6 +198,22 @@ resource "aws_eks_fargate_profile" "kube-system" {
   }
 }
 
+resource "aws_eks_fargate_profile" "staging" {
+  cluster_name           = aws_eks_cluster.cluster.name
+  fargate_profile_name   = "staging"
+  pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
+
+  # These subnets must have the following resource tag: 
+  # kubernetes.io/cluster/<CLUSTER_NAME>.
+  subnet_ids = [
+    aws_subnet.private_subnets[0].id,
+    aws_subnet.private_subnets[1].id
+  ]
+
+  selector {
+    namespace = "staging"
+  }
+}
 //remove ec2 annotation from CoreDNS deployment
 
 data "aws_eks_cluster_auth" "eks" {
@@ -246,6 +247,36 @@ EOH
   lifecycle {
     ignore_changes = [triggers]
   }
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = aws_eks_cluster.cluster.endpoint
+    cluster_ca_certificate = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.cluster.id]
+      command     = "aws"
+    }
+    //token                  = data.aws_eks_cluster_auth.cluster-auth.token
+    
+  }
+}
+
+resource "helm_release" "metrics-server" {
+  name = "metrics-server"
+
+  repository = "https://kubernetes-sigs.github.io/metrics-server/"
+  chart      = "metrics-server"
+  namespace  = "kube-system"
+  version    = "3.8.2"
+
+  set {
+    name  = "metrics.enabled"
+    value = false
+  }
+
+  depends_on = [aws_eks_fargate_profile.kube-system]
 }
 
 /*
@@ -302,35 +333,7 @@ data "aws_eks_cluster_auth" "cluster-auth" {
   name       = aws_eks_cluster.cluster.name
 }
 
-provider "helm" {
-  kubernetes {
-    host                   = aws_eks_cluster.cluster.endpoint
-    cluster_ca_certificate = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
-    /*exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.cluster.id]
-      command     = "aws"
-    }
-    token                  = data.aws_eks_cluster_auth.cluster-auth.token
-    
-  }
-}
-/*
-resource "helm_release" "metrics-server" {
-  name = "metrics-server"
 
-  repository = "https://kubernetes-sigs.github.io/metrics-server/"
-  chart      = "metrics-server"
-  namespace  = "kube-system"
-  version    = "3.8.2"
-
-  set {
-    name  = "metrics.enabled"
-    value = false
-  }
-
-  depends_on = [aws_eks_fargate_profile.kube-system]
-}
 
 resource "helm_release" "aws-load-balancer-controller" {
   name = "aws-load-balancer-controller"
