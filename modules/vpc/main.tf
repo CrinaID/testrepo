@@ -258,27 +258,33 @@ EOH
   }
 }
 
+data "aws_eks_cluster_auth" "cluster-auth" {
+  depends_on = [aws_eks_cluster.cluster]
+  name       = aws_eks_cluster.cluster.name
+}
 provider "helm" {
   kubernetes {
     host                   = aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
-    exec {
+    /*exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.cluster.id]
       command     = "aws"
-    }
-    //token                  = data.aws_eks_cluster_auth.cluster-auth.token
+    }*/
+    token                  = data.aws_eks_cluster_auth.cluster-auth.token
     
   }
 }
 
+
+
 resource "helm_release" "metrics-server" {
   name = "metrics-server"
 
-  repository = "https://kubernetes-sigs.github.io/metrics-server/"
+  repository = "https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/"
   chart      = "metrics-server"
   namespace  = "kube-system"
-  version    = "3.8.2"
+  //version    = "3.8.2"
 
   set {
     name  = "metrics.enabled"
@@ -337,10 +343,6 @@ output "aws_load_balancer_controller_role_arn" {
   value = aws_iam_role.aws_load_balancer_controller.arn
 }
 
-data "aws_eks_cluster_auth" "cluster-auth" {
-  depends_on = [aws_eks_cluster.cluster]
-  name       = aws_eks_cluster.cluster.name
-}
 
 
 
