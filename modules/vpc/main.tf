@@ -277,14 +277,18 @@ provider "helm" {
 }
 
 resource "helm_release" "metrics-server" {
-  name       = "metrics-server" 
-  chart      = "https://charts.bitnami.com/bitnami/metrics-server-5.2.0.tgz"
-  namespace  = "kube-system"
-  values = [<<EOF
-  apiService:
-  create: true
-  EOF
-  ] 
+    name = "metrics-server"
+
+    repository       = "https://charts.bitnami.com/bitnami"
+    chart            = "metrics-server"
+    namespace        = "metrics-server"
+    version          = "5.11.1"
+    create_namespace = true
+
+    set {
+        name  = "apiService.create"
+        value = "true"
+    }
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
