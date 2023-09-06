@@ -310,7 +310,7 @@ provider "helm" {
       command     = "aws"
     }*/
     token                  = data.aws_eks_cluster_auth.cluster-auth.token
-    load_config_file       = false
+    
   }
 }
 /*
