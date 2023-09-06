@@ -275,7 +275,7 @@ provider "helm" {
     
   }
 }
-
+/*
 resource "helm_release" "metrics-server" {
     name = "metrics-server"
 
@@ -293,7 +293,7 @@ resource "helm_release" "metrics-server" {
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
 
-/*
+*/
 data "tls_certificate" "eks" {
   url = aws_eks_cluster.cluster.identity[0].oidc[0].issuer
 }
@@ -343,7 +343,7 @@ output "aws_load_balancer_controller_role_arn" {
 }
 
 
-
+/*
 
 resource "helm_release" "aws-load-balancer-controller" {
   name = "aws-load-balancer-controller"
