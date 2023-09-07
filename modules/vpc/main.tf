@@ -121,12 +121,12 @@ resource "aws_route_table" "private" {
   }
 }
 resource "aws_route_table_association" "private-subnet-1" {
-  subnet_id      = aws_subnet.private-subnets[0].id
+  subnet_id      = aws_subnet.private_subnets[0].id
   route_table_id = aws_route_table.private.id
 }
 
 resource "aws_route_table_association" "private-subnet-2" {
-  subnet_id      = aws_subnet.private-subnets[1].id
+  subnet_id      = aws_subnet.private_subnets[1].id
   route_table_id = aws_route_table.private.id
 }
 
