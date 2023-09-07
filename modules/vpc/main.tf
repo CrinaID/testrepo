@@ -302,22 +302,22 @@ resource "aws_iam_openid_connect_provider" "eks" {
   url             = aws_eks_cluster.cluster.identity[0].oidc[0].issuer
 }
 
-/*
+
 data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy" {
-  statement {
+  content{
     actions = ["sts:AssumeRoleWithWebIdentity"]
     effect  = "Allow"
 
-    condition {
-      test     = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
-    }
+  condition {
+    test     = "StringEquals"
+    variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
+    values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+  }
 
-    principals {
-      identifiers = [aws_iam_openid_connect_provider.eks.arn]
-      type        = "Federated"
-    }
+  principals {
+    identifiers = [aws_iam_openid_connect_provider.eks.arn]
+    type        = "Federated"
+  }
   }
 }
 
@@ -343,7 +343,7 @@ resource "helm_release" "aws-load-balancer-controller" {
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
   namespace  = "kube-system"
-  version = "1.3.3"
+  version = "1.4.1"
 
   set {
     name  = "clusterName"
