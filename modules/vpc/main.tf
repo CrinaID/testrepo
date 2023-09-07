@@ -321,7 +321,7 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSFargatePodExecutionRolePolic
 }
 
 resource "aws_iam_role" "fargate_pod_execution_role" {
-  name                  = "${var.name}-eks-fargate-pod-execution-role"
+  name                  = "dm-eks-fargate-pod-execution-role"
   force_detach_policies = true
 
   assume_role_policy = <<POLICY
