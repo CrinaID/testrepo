@@ -315,7 +315,7 @@ resource "aws_eks_fargate_profile" "main" {
     namespace = "2048-game"
   }
 }
-esource "aws_iam_role_policy_attachment" "AmazonEKSFargatePodExecutionRolePolicy" {
+resource "aws_iam_role_policy_attachment" "AmazonEKSFargatePodExecutionRolePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
   role       = aws_iam_role.fargate_pod_execution_role.name
 }
