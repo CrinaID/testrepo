@@ -336,7 +336,7 @@ resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attach" 
   policy_arn = aws_iam_policy.aws_load_balancer_controller.arn
 }
 
-
+/*
 resource "helm_release" "aws-load-balancer-controller" {
   name = "aws-load-balancer-controller"
 
@@ -383,4 +383,5 @@ resource "helm_release" "aws-load-balancer-controller" {
 
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
+
 */
