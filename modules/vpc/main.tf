@@ -33,6 +33,7 @@ resource "aws_subnet" "public_subnets" {
     
     Name = "${var.project_code}-${var.env_name}-publicsub-${1+count.index}"
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+    "kubernetes.io/role/internal-elb"           = "1"
   }
 }
 
@@ -45,6 +46,7 @@ resource "aws_subnet" "private_subnets" {
   tags = {
     Name = "${var.project_code}-${var.env_name}-privatesub-${1+count.index}"
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+    "kubernetes.io/role/internal-elb"           = "1"
   }
 }
 
@@ -336,107 +338,6 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
 resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attach" {
   role       = aws_iam_role.aws_load_balancer_controller.name
   policy_arn = aws_iam_policy.aws_load_balancer_controller.arn
-}
-
-
-resource "kubernetes_service_account" "this" {
-  automount_service_account_token = true
-  metadata {
-    name      = "aws-load-balancer-controller"
-    namespace = "kube-system"
-    annotations = {
-      # This annotation is only used when running on EKS which can
-      # use IAM roles for service accounts.
-      "eks.amazonaws.com/role-arn" = aws_iam_role.aws_load_balancer_controller.arn
-    }
-    labels = {
-      "app.kubernetes.io/name"       = "aws-load-balancer-controller"
-      "app.kubernetes.io/component"  = "controller"
-      "app.kubernetes.io/managed-by" = "terraform"
-    }
-  }
-  depends_on = [aws_eks_fargate_profile.kube-system]
-}
-resource "kubernetes_cluster_role" "this" {
-  metadata {
-    name = "aws-load-balancer-controller"
-
-    labels = {
-      "app.kubernetes.io/name"       = "aws-load-balancer-controller"
-      "app.kubernetes.io/managed-by" = "terraform"
-    }
-  }
-
-  rule {
-    api_groups = [
-      "",
-      "extensions",
-    ]
-
-    resources = [
-      "configmaps",
-      "endpoints",
-      "events",
-      "ingresses",
-      "ingresses/status",
-      "services",
-    ]
-
-    verbs = [
-      "create",
-      "get",
-      "list",
-      "update",
-      "watch",
-      "patch",
-    ]
-  }
-
-  rule {
-    api_groups = [
-      "",
-      "extensions",
-    ]
-
-    resources = [
-      "nodes",
-      "pods",
-      "secrets",
-      "services",
-      "namespaces",
-    ]
-
-    verbs = [
-      "get",
-      "list",
-      "watch",
-    ]
-  }
-  depends_on = [aws_eks_fargate_profile.kube-system]
-}
-resource "kubernetes_cluster_role_binding" "this" {
-  metadata {
-    name = "aws-load-balancer-controller"
-
-    labels = {
-      "app.kubernetes.io/name"       = "aws-load-balancer-controller"
-      "app.kubernetes.io/managed-by" = "terraform"
-    }
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = kubernetes_cluster_role.this.metadata[0].name
-  }
-
-  subject {
-    api_group = ""
-    kind      = "ServiceAccount"
-    name      = kubernetes_service_account.this.metadata[0].name
-    namespace = kubernetes_service_account.this.metadata[0].namespace
-  }
-  depends_on = [aws_eks_fargate_profile.kube-system]
 }
 
 
