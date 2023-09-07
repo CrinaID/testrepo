@@ -351,7 +351,10 @@ resource "helm_release" "aws-load-balancer-controller" {
     name  = "clusterName"
     value = aws_eks_cluster.cluster.id
   }
-
+  set {
+    name = "image.repository"
+    value = "https://gallery.ecr.aws/eks/aws-load-balancer-controller"
+  }
   set {
     name  = "image.tag"
     value = "v2.3.0"
