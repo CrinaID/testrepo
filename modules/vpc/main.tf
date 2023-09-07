@@ -184,6 +184,7 @@ resource "aws_iam_role" "eks-fargate-profile" {
       }
     }]
     Version = "2012-10-17"
+    ManagedPolicyArns: "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
   })
 }
 
@@ -343,7 +344,7 @@ resource "helm_release" "aws-load-balancer-controller" {
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
   namespace  = "kube-system"
-  version = "1.4.1"
+  version = "1.1.4"
 
   set {
     name  = "clusterName"
@@ -352,7 +353,7 @@ resource "helm_release" "aws-load-balancer-controller" {
 
   set {
     name  = "image.tag"
-    value = "v2.4.2"
+    value = "v2.6.0"
   }
 
   set {
