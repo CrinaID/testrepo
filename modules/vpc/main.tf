@@ -302,7 +302,7 @@ resource "aws_iam_openid_connect_provider" "eks" {
   url             = aws_eks_cluster.cluster.identity[0].oidc[0].issuer
 }
 
-
+//eks service account
 data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy" {
   statement{
     actions = ["sts:AssumeRoleWithWebIdentity"]
@@ -336,7 +336,7 @@ resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attach" 
   policy_arn = aws_iam_policy.aws_load_balancer_controller.arn
 }
 
-/*
+
 resource "helm_release" "aws-load-balancer-controller" {
   name = "aws-load-balancer-controller"
 
@@ -384,4 +384,3 @@ resource "helm_release" "aws-load-balancer-controller" {
   depends_on = [aws_eks_fargate_profile.kube-system]
 }
 
-*/
