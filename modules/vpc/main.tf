@@ -268,8 +268,8 @@ provider "helm" {
     host                   = aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
     exec {
-      //api_version = "client.authentication.k8s.io/v1beta1"
-      api_version = "apiextensions.k8s.io/v1"
+      api_version = "client.authentication.k8s.io/v1beta1"
+
       args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.cluster.id]
       command     = "aws"
     }   
@@ -345,7 +345,7 @@ resource "helm_release" "aws-load-balancer-controller" {
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
   namespace  = "kube-system"
-  version = "1.1.4"
+  version = "3.12.3"
 
   set {
     name  = "clusterName"
