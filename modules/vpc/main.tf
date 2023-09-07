@@ -345,7 +345,7 @@ resource "helm_release" "aws-load-balancer-controller" {
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
   namespace  = "kube-system"
-  version = "1.6.0"
+  version = "1.4.1"
 
   set {
     name  = "clusterName"
@@ -353,12 +353,12 @@ resource "helm_release" "aws-load-balancer-controller" {
   }
   set {
     name = "image.repository"
-    value = "https://gallery.ecr.aws/eks/aws-load-balancer-controller"
+    value = "amazon/aws-load-balancer-controller"
   }
-  set {
+  /*set {
     name  = "image.tag"
     value = "v2.3.0"
-  }
+  }*/
 
   set {
     name  = "replicaCount"
