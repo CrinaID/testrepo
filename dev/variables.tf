@@ -25,3 +25,12 @@ variable "cluster_version" {
     type = string
     default = "1.27"
 }
+variable "region"{
+    default = "uk-north-1"
+}
+
+
+
+
+
+

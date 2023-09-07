@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-north-1"
+  region = var.region
 }
 
 terraform {
@@ -239,7 +239,7 @@ resource "aws_eks_node_group" "main" {
 }
 
 resource "aws_iam_role" "eks_node_group_role" {
-  name                  = "${var.name}-eks-node-group-role"
+  name                  = "dm-eks-node-group-role"
   force_detach_policies = true
 
   assume_role_policy = <<POLICY
