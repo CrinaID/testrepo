@@ -353,7 +353,7 @@ resource "helm_release" "aws-load-balancer-controller" {
   }
   set {
     name = "image.repository"
-    value = "amazon/aws-load-balancer-controller"
+    value = "public.ecr.aws/eks/aws-load-balancer-controller"
   }
   /*set {
     name  = "image.tag"
