@@ -139,7 +139,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "private"
+    Name = "public"
   }
 }
 resource "aws_route_table_association" "public-subnet-1" {
