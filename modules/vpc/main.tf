@@ -119,7 +119,7 @@ resource "aws_route_table_association" "public-subnet-2" {
 //Create Elastic IP for the NAT Gateway
 resource "aws_eip" "Nat-Gateway-EIP" {
   depends_on = [
-    aws_route_table_association. nat_gateway_one_rt
+    aws_route_table_association.public-subnet-1
   ]
   vpc = true
   tags = {
