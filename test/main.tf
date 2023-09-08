@@ -1,3 +1,4 @@
+
 module "vpcmodule"{
     source = "../modules/vpc"
     cidr_vpc = var.test_cidr
@@ -7,5 +8,4 @@ module "vpcmodule"{
     project_code = var.project_code
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
-
 }

@@ -7,9 +7,17 @@ variable "private_subnets" {}
 variable "env_name"{}
 
 variable "project_code" {}
+
 variable "cluster_name" {
 
 }
 variable "cluster_version" {
 
 }
+variable "enabled" {
+  type        = bool
+  default     = true
+  description = "Variable indicating whether deployment is enabled."
+}
+
+variable "region" {}
