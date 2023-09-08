@@ -135,7 +135,7 @@ resource "aws_route_table" "public" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gateway_one.id
+    nat_gateway_id = aws_internet_gateway.internet_gateway.id
   }
 
   tags = {
