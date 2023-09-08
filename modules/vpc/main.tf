@@ -70,11 +70,50 @@ resource "aws_route_table" "internet_gateway_rt" {
   }
   
 }
-//associate the IGW to the first public subnet
-resource "aws_route_table_association" "nat_gateway_one_rt" {
-  subnet_id = aws_subnet.public_subnets[0].id
-  route_table_id = aws_route_table.internet_gateway_rt.id
+//so that private subnets can access the internet, redirect through NAT gateway
 
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.vpc_dm_eks.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_gateway_one.id
+  }
+
+  tags = {
+    Name = "private"
+  }
+}
+resource "aws_route_table_association" "private-subnet-1" {
+  subnet_id      = aws_subnet.private_subnets[0].id
+  route_table_id = aws_route_table.private.id
+}
+
+resource "aws_route_table_association" "private-subnet-2" {
+  subnet_id      = aws_subnet.private_subnets[1].id
+  route_table_id = aws_route_table.private.id
+}
+//associate the public subnets to the IGW
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.vpc_dm_eks.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.internet_gateway.id
+  }
+
+  tags = {
+    Name = "public"
+  }
+}
+resource "aws_route_table_association" "public-subnet-1" {
+  subnet_id      = aws_subnet.public_subnets[0].id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "public-subnet-2" {
+  subnet_id      = aws_subnet.public_subnets[1].id
+  route_table_id = aws_route_table.public.id
 }
 
 //Create Elastic IP for the NAT Gateway
@@ -106,51 +145,7 @@ resource "aws_nat_gateway" "nat_gateway_one" {
   }
 }
 
-//so that private subnets can access the internet, redirect through NAT gateway
 
-resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.vpc_dm_eks.id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gateway_one.id
-  }
-
-  tags = {
-    Name = "private"
-  }
-}
-resource "aws_route_table_association" "private-subnet-1" {
-  subnet_id      = aws_subnet.private_subnets[0].id
-  route_table_id = aws_route_table.private.id
-}
-
-resource "aws_route_table_association" "private-subnet-2" {
-  subnet_id      = aws_subnet.private_subnets[1].id
-  route_table_id = aws_route_table.private.id
-}
-
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.vpc_dm_eks.id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.internet_gateway.id
-  }
-
-  tags = {
-    Name = "public"
-  }
-}
-resource "aws_route_table_association" "public-subnet-1" {
-  subnet_id      = aws_subnet.public_subnets[0].id
-  route_table_id = aws_route_table.public.id
-}
-
-resource "aws_route_table_association" "public-subnet-2" {
-  subnet_id      = aws_subnet.public_subnets[1].id
-  route_table_id = aws_route_table.public.id
-}
 
 //IAM role for EKS - used to make API calls to AWS services
 //i.e. to create managed node pools
