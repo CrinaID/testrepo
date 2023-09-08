@@ -34,7 +34,7 @@ resource "aws_subnet" "public_subnets" {
     
     Name = "${var.project_code}-${var.env_name}-publicsub-${1+count.index}"
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
-    "kubernetes.io/role/internal-elb"           = "1"
+    "kubernetes.io/role/elb"           = "1"
   }
 }
 
