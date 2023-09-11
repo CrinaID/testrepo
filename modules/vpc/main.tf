@@ -1,14 +1,5 @@
-terraform {
-    required_providers {
-      aws = {
-        region = "eu-north-1"
-      }
-    }
-
-    /*backend "s3" {
-      key = "dev/terraform.tfstate"
-      region = "eu-north-1"
-    }  */
+provider "aws" {
+  region = var.region
 }
 resource "aws_kms_key" "state_backend_bucket_kms_key" {
   description             = "Encrypt the state bucket objects"
