@@ -14,10 +14,6 @@ variable "cluster_name" {
 variable "cluster_version" {
 
 }
-variable "enabled" {
-  type        = bool
-  default     = true
-  description = "Variable indicating whether deployment is enabled."
-}
+
 
 variable "region" {}
