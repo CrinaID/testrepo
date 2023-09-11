@@ -51,7 +51,11 @@ resource "aws_dynamodb_table" "state_dynamo_table" {
   }
 }
 
-
+terraform {
+    backend "s3" {
+      key = "dm-gen-configuration/${env_name}/terraform.tfstate"
+    }  
+}
 
 
 resource "aws_vpc" "vpc_dm_eks" {
