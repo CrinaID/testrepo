@@ -7,10 +7,8 @@ resource "aws_kms_key" "state_backend_bucket_kms_key" {
   deletion_window_in_days = 10
 }
 resource "aws_s3_bucket" "state_backend_bucket" {
-  bucket = "dm-${var.env_name}-configuration"
-  lifecycle {
-    prevent_destroy = true
-  }
+  bucket = "dm-gen-configuration"
+
 }
 resource "aws_s3_bucket_versioning" "state_backend_bucket_versioning" {
   bucket  = aws_s3_bucket.state_backend_bucket.id

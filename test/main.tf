@@ -1,4 +1,8 @@
-
+terraform {
+    backend "s3" {
+      key = "dm-test-configuration/terraform.tfstate"
+    }  
+}
 module "vpcmodule"{
     source = "../modules/vpc"
     cidr_vpc = var.test_cidr
