@@ -17,6 +17,6 @@ module "vpcmodule"{
 
 terraform {
     backend "s3" {
-      key = "dm-dev-configuration/terraform.tfstate"
+      key = "dm-gen-configuration/dev/terraform.tfstate"
     }  
 }
