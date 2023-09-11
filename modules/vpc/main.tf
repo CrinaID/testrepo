@@ -2,7 +2,7 @@
 provider "aws" {
   region = "eu-north-1"
 }
-
+//backend for dev and test envs
 terraform {
   backend "s3" {
     bucket = "dm-gen-configuration"
