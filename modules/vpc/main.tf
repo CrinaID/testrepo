@@ -26,14 +26,14 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "state_backend_buc
 }
 
 # block S3 bucket public access per each Env's bucket
-/*resource "aws_s3_bucket_public_access_block" "state_backend_bucket_acl" {
+resource "aws_s3_bucket_public_access_block" "state_backend_bucket_acl" {
   bucket = aws_s3_bucket.state_backend_bucket.id
 
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
-}*/
+}
 
 resource "aws_dynamodb_table" "state_dynamo_table" {
   name = "tf-state-lock-${var.env_name}"
