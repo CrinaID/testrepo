@@ -1,11 +1,13 @@
 
-module "vpcmodule"{
-    source = "../modules/vpc"
-    terraform {
+terraform {
     backend "s3" {
       key = module.vpc.aws_s3_bucket.state_backend_bucket.bucket+"/terraform.tfstate"
     }  
 }
+
+module "vpcmodule"{
+    source = "../modules/vpc"
+
     cidr_vpc = var.vpc_cidr
     private_subnets = var.private_subnets
     public_subnets = var.public_subnets
