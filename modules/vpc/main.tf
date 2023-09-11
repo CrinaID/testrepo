@@ -268,7 +268,7 @@ resource "aws_iam_role" "eks-fargate-profile" {
       }
     }]
     Version = "2012-10-17"
-    ManagedPolicyArns: "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
+    
   })
 }
 
