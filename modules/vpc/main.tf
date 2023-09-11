@@ -1,3 +1,4 @@
+
 provider "aws" {
   region = var.region
 }
@@ -38,7 +39,6 @@ resource "aws_s3_bucket_public_access_block" "state_backend_bucket_acl" {
   restrict_public_buckets = true
 }
 
-# create DynamoDB table per each Env
 resource "aws_dynamodb_table" "state_dynamo_table" {
   name = "tf-state-lock-${var.env_name}"
 
@@ -51,11 +51,7 @@ resource "aws_dynamodb_table" "state_dynamo_table" {
   }
 }
 
-terraform {
-    backend "s3" {
-      key = "dm-gen-configuration/${env_name}/terraform.tfstate"
-    }  
-}
+
 
 
 resource "aws_vpc" "vpc_dm_eks" {
