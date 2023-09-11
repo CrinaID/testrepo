@@ -6,7 +6,7 @@ resource "aws_kms_key" "state_backend_bucket_kms_key" {
   deletion_window_in_days = 10
 }
 resource "aws_s3_bucket" "state_backend_bucket" {
-  bucket = "dm-gen-configuration"
+  bucket = "dm-gen-config"
 
 }
 resource "aws_s3_bucket_versioning" "state_backend_bucket_versioning" {
