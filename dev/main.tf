@@ -1,9 +1,5 @@
 
-terraform {
-    backend "s3" {
-      key = "dm-dev-configuration/terraform.tfstate"
-    }  
-}
+
 
 module "vpcmodule"{
     source = "../modules/vpc"
@@ -17,4 +13,10 @@ module "vpcmodule"{
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
     region = var.region
+}
+
+terraform {
+    backend "s3" {
+      key = "dm-dev-configuration/terraform.tfstate"
+    }  
 }
