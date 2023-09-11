@@ -8,6 +8,6 @@ terraform {
 
     backend "s3" {
       key = "dev/terraform.tfstate"
-      region = var.region
+      region = "eu-north-1"
     }  
 }
