@@ -15,8 +15,8 @@ module "vpcmodule"{
     region = var.region
 }
 
-terraform {
+/*terraform {
     backend "s3" {
       key = "dm-gen-configuration/dev/terraform.tfstate"
     }  
-}
+}*/
