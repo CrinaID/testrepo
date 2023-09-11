@@ -1,8 +1,4 @@
 
-provider "aws" {
-  region = var.region
-}
-
 resource "aws_kms_key" "state_backend_bucket_kms_key" {
   description             = "Encrypt the state bucket objects"
   deletion_window_in_days = 10
@@ -50,9 +46,6 @@ resource "aws_dynamodb_table" "state_dynamo_table" {
     type = "S"
   }
 }
-
-
-
 
 resource "aws_vpc" "vpc_dm_eks" {
   cidr_block = var.cidr_vpc
