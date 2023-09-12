@@ -1,3 +1,3 @@
-variable "dev_env_name"{}
+variable "env_name"{}
 
 variable "project_code" {}
