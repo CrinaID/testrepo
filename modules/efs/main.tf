@@ -9,7 +9,7 @@ resource "aws_efs_file_system" "myfilesystem" {
   }
 # Tagging the EFS File system with its value as Myfilesystem
   tags = {
-    Name = "Myfilesystem"
+    Name = "${var.project_code}-efs-${var.env_name}"
   }
 }
 

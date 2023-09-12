@@ -16,4 +16,7 @@ module "vpcmodule"{
 }
 module "efsmodule" {
     source = "../modules/efs"
+    env_name = var.env_name
+    project_code = var.project_code
+
 }
