@@ -1,3 +1,3 @@
-output "private_subnets_ids" {
-    value = var.private_subnets.*.id
+output "private_subnet_one" {
+    value = var.private_subnets[0].id
 }
