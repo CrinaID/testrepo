@@ -18,5 +18,6 @@ module "efsmodule" {
     source = "../modules/efs"
     env_name = var.dev_env_name
     project_code = var.project_code
+    subnet_id = module.vpcmodule.private_subnets[0].id
 
 }

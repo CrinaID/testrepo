@@ -28,7 +28,9 @@ variable "cluster_version" {
 variable "region"{
     default = "eu-north-1"
 }
-
+variable "subnet_id" {
+    type = string
+}
 
 
 
