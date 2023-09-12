@@ -54,5 +54,5 @@ POLICY
 # AWS EFS Mount point uses File system ID to launch.
 resource "aws_efs_mount_target" "alpha" {
   file_system_id = aws_efs_file_system.myfilesystem.id
-  subnet_id      = var.module.vpc.private_subnets[0].id
+  subnet_id      = module.vpc.private_subnets[0].id
 }
