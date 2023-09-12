@@ -14,4 +14,6 @@ module "vpcmodule"{
     cluster_version = var.cluster_version
     region = var.region
 }
-
+module "efsmodule" {
+    source = "../modules/efs"
+}
