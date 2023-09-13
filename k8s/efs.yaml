@@ -19,7 +19,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-<your-id>
+    volumeHandle: fs-013a9d91ee341fc36
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -38,7 +38,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: app
-  namespace: staging
+
 spec:
   containers:
   - name: app1 
