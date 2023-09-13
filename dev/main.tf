@@ -14,10 +14,4 @@ module "vpcmodule"{
     cluster_version = var.cluster_version
     region = var.region
 }
-module "efsmodule" {
-    source = "../modules/efs"
-    env_name = var.dev_env_name
-    project_code = var.project_code
-    subnet_id = "${module.vpcmodule.private_subnet_one}"
 
-}
