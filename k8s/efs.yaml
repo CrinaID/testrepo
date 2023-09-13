@@ -38,7 +38,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: app
-
+  namespace: staging
 spec:
   containers:
   - name: app1 
