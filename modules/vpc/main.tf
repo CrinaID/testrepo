@@ -305,6 +305,23 @@ resource "aws_eks_fargate_profile" "staging" {
     namespace = "staging"
   }
 }
+
+resource "aws_eks_fargate_profile" "externalsecrets" {
+  cluster_name           = aws_eks_cluster.cluster.name
+  fargate_profile_name   = "externalsecrets"
+  pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
+
+  # These subnets must have the following resource tag: 
+  # kubernetes.io/cluster/<CLUSTER_NAME>.
+  subnet_ids = [
+    aws_subnet.private_subnets[0].id,
+    aws_subnet.private_subnets[1].id
+  ]
+
+  selector {
+    namespace = "externalsecrets"
+  }
+}
 //remove ec2 annotation from CoreDNS deployment
 
 data "aws_eks_cluster_auth" "eks" {
@@ -400,7 +417,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy"
   }
   }
 }
-
+#should have env specified
 resource "aws_iam_role" "aws_load_balancer_controller" {
   assume_role_policy = data.aws_iam_policy_document.aws_load_balancer_controller_assume_role_policy.json
   name               = "aws-load-balancer-controller"
@@ -494,3 +511,98 @@ resource "aws_efs_mount_target" "zone-b" {
   subnet_id       = aws_subnet.private_subnets[1].id
   security_groups = [aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id]
 }
+
+
+//External secrets setup
+# Policy
+data "aws_iam_policy_document" "external_secrets" {
+  count = var.enabled ? 1 : 0
+  statement {
+    actions = [
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds"
+    ]
+    resources = [
+      "*",
+    ]
+    effect = "Allow"
+  }
+
+  statement {
+    actions = [
+      "ssm:GetParameter*"
+    ]
+    resources = [
+      "*",
+    ]
+    effect = "Allow"
+  }
+
+}
+
+resource "aws_iam_policy" "external_secrets" {
+  depends_on  = [var.mod_dependency]
+  count       = var.enabled ? 1 : 0
+  name        = "${var.cluster_name}-external-secrets"
+  path        = "/"
+  description = "Policy for external secrets service"
+
+  policy = data.aws_iam_policy_document.external_secrets[0].json
+}
+
+# Role
+data "aws_iam_policy_document" "external_secrets_assume" {
+  count = var.enabled ? 1 : 0
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = [var.cluster_identity_oidc_issuer_arn]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(var.cluster_identity_oidc_issuer, "https://", "")}:sub"
+
+      values = [
+        "system:serviceaccount:${var.namespace}:${var.service_account_name}",
+      ]
+    }
+
+    effect = "Allow"
+  }
+}
+
+resource "aws_iam_role" "external_secrets" {
+  count              = var.enabled ? 1 : 0
+  name               = "${var.cluster_name}-external-secrets"
+  assume_role_policy = data.aws_iam_policy_document.external_secrets_assume[0].json
+}
+
+resource "aws_iam_role_policy_attachment" "external_secrets" {
+  count      = var.enabled ? 1 : 0
+  role       = aws_iam_role.external_secrets[0].name
+  policy_arn = aws_iam_policy.external_secrets[0].arn
+}
+resource "helm_release" "external_secrets" {
+
+  name       = "external-secrets"
+  chart      = "external-secrets"
+  repository = "https://charts.external-secrets.io"
+  version    = "0.7.1"
+  namespace  = "external-secrets"
+
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = aws_iam_role.external_secrets[0].arn
+  }
+
+  values = [
+    yamlencode(var.settings)
+  ]
+
+}
+
