@@ -570,7 +570,7 @@ data "aws_iam_policy_document" "external_secrets_assume" {
       variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
 
       values = [
-        "system:serviceaccount:externalsecrets:externalsecrets",
+        "system:serviceaccount:externalsecrets:external-secrets",
       ]
     }
 
