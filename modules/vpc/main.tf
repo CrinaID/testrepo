@@ -640,21 +640,30 @@ resource "aws_iam_policy" "iamSecretPolicy" {
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "secretsmanager:GetResourcePolicy",
-          "secretsmanager:GetSecretValue",
-          "secretsmanager:DescribeSecret",
-          "secretsmanager:ListSecretVersionIds"
-        ]
-        Effect   = "Allow"
-        Resource = [
-          "arn:aws:secretsmanager:${var.region}:${var.account_id}:secret:${var.env_name}/*"
-        ]
-      },
+    actions = [
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds"
     ]
+    resources = [
+      "*",
+    ]
+    effect = "Allow"
   })
+/*
+  statement = [
+  {
+    action = [
+      "ssm:GetParameter*"
+    ]
+    resource = [
+      "*",
+    ]
+    effect = "Allow"
+  
+  }   
+]*/
 }
 
 resource "helm_release" "external-secrets" {
