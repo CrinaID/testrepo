@@ -595,7 +595,7 @@ resource "helm_release" "external_secrets" {
   chart      = "external-secrets"
   repository = "https://charts.external-secrets.io"
   version    = "0.7.1"
-  namespace  = "external-secrets"
+  //amespace  = "external-secrets"
 
   set {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
