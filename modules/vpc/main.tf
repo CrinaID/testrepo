@@ -502,7 +502,7 @@ resource "aws_efs_mount_target" "zone-b" {
 
 resource "aws_eks_fargate_profile" "externalsecrets" {
   cluster_name           = aws_eks_cluster.cluster.name
-  fargate_profile_name   = "externalsecrets"
+  fargate_profile_name   = "external-secrets"
   pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
 
   # These subnets must have the following resource tag: 
@@ -595,7 +595,7 @@ resource "helm_release" "external_secrets" {
   chart      = "external-secrets"
   repository = "https://charts.external-secrets.io"
   version    = "0.7.1"
-  namespace  = "external-secrets"
+  namespace  = "externalsecrets"
 
   set {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
