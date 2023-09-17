@@ -560,15 +560,15 @@ data "aws_iam_policy_document" "external_secrets_assume" {
 
     principals {
       type        = "Federated"
-      identifiers = [var.cluster_identity_oidc_issuer_arn]
+      identifiers = [aws_iam_openid_connect_provider.eks.arn]
     }
-
+a
     condition {
       test     = "StringEquals"
-      variable = "${replace(var.cluster_identity_oidc_issuer, "https://", "")}:sub"
+      variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
 
       values = [
-        "system:serviceaccount:${var.namespace}:${var.service_account_name}",
+        "system:serviceaccount:externalsecrets:externalsecrets",
       ]
     }
 
