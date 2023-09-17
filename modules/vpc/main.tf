@@ -516,7 +516,7 @@ resource "aws_eks_fargate_profile" "externalsecrets" {
     namespace = "external-secrets"
   }
 }
-# Policy
+/*# Policy
 data "aws_iam_policy_document" "external_secrets" {
   count = var.enabled ? 1 : 0
   statement {
@@ -591,7 +591,7 @@ resource "aws_iam_role_policy_attachment" "external_secrets" {
 }
 resource "helm_release" "externalsecrets" {
 
-  name       = "externalsecrets"
+  name       = "external-secrets"
   chart      = "external-secrets"
   repository = "https://charts.external-secrets.io"
   version    = "0.7.1"
@@ -609,3 +609,72 @@ resource "helm_release" "externalsecrets" {
 
 }
 
+*/
+
+module "eks-irsa" {
+  source  = "nalbam/eks-irsa/aws"
+  version = "0.13.2"
+
+  name = "apps_role_${var.env_name}"
+  region = var.aws_region
+  cluster_name = aws_eks_cluster.cluster.name
+  cluster_names = [
+    aws_eks_cluster.cluster.name
+  ]
+  kube_namespace      = "default"
+  kube_serviceaccount = "external-secrets"
+
+  policy_arns = [
+    aws_iam_policy.iamSecretPolicy.arn
+  ]
+
+  depends_on = [
+    aws_eks_cluster.cluster
+  ]
+}
+
+resource "aws_iam_policy" "iamSecretPolicy" {
+  name        = "${var.env_name}_secretPolicy"
+  path        = "/"
+  description = "Allow access to ${var.env_name} secrets"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:ListSecretVersionIds"
+        ]
+        Effect   = "Allow"
+        Resource = [
+          "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:${var.env_name}/*"
+        ]
+      },
+    ]
+  })
+}
+
+resource "helm_release" "external-secrets" {
+  name       = "external-secrets"
+  repository = "https://external-secrets.github.io/kubernetes-external-secrets/"
+  chart      = "kubernetes-external-secrets"
+  verify     = "false"
+
+  values = [
+    templatefile("./helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
+  ]
+
+  set {
+    name  = "metrics.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "service.annotations.prometheus\\.io/port"
+    value = "9127"
+    type  = "string"
+  }
+}
