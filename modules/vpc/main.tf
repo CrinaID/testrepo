@@ -589,9 +589,9 @@ resource "aws_iam_role_policy_attachment" "external_secrets" {
   role       = aws_iam_role.external_secrets[0].name
   policy_arn = aws_iam_policy.external_secrets[0].arn
 }
-resource "helm_release" "external_secrets" {
+resource "helm_release" "externalsecrets" {
 
-  name       = "external_secrets"
+  name       = "externalsecrets"
   chart      = "external-secrets"
   repository = "https://charts.external-secrets.io"
   version    = "0.7.1"
