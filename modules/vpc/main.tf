@@ -562,7 +562,7 @@ data "aws_iam_policy_document" "external_secrets_assume" {
       type        = "Federated"
       identifiers = [aws_iam_openid_connect_provider.eks.arn]
     }
-a
+
     condition {
       test     = "StringEquals"
       variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
