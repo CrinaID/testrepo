@@ -591,11 +591,12 @@ resource "aws_iam_role_policy_attachment" "external_secrets" {
 }
 resource "helm_release" "external_secrets" {
 
-  name       = "external-secrets"
+  name       = "external_secrets"
   chart      = "external-secrets"
   repository = "https://charts.external-secrets.io"
   version    = "0.7.1"
-  //amespace  = "external-secrets"
+  namespace  = "external-secrets"
+  
 
   set {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
