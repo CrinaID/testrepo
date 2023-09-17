@@ -306,22 +306,7 @@ resource "aws_eks_fargate_profile" "staging" {
   }
 }
 
-resource "aws_eks_fargate_profile" "externalsecrets" {
-  cluster_name           = aws_eks_cluster.cluster.name
-  fargate_profile_name   = "externalsecrets"
-  pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
 
-  # These subnets must have the following resource tag: 
-  # kubernetes.io/cluster/<CLUSTER_NAME>.
-  subnet_ids = [
-    aws_subnet.private_subnets[0].id,
-    aws_subnet.private_subnets[1].id
-  ]
-
-  selector {
-    namespace = "externalsecrets"
-  }
-}
 //remove ec2 annotation from CoreDNS deployment
 
 data "aws_eks_cluster_auth" "eks" {
@@ -514,6 +499,23 @@ resource "aws_efs_mount_target" "zone-b" {
 
 
 //External secrets setup
+
+resource "aws_eks_fargate_profile" "externalsecrets" {
+  cluster_name           = aws_eks_cluster.cluster.name
+  fargate_profile_name   = "externalsecrets"
+  pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
+
+  # These subnets must have the following resource tag: 
+  # kubernetes.io/cluster/<CLUSTER_NAME>.
+  subnet_ids = [
+    aws_subnet.private_subnets[0].id,
+    aws_subnet.private_subnets[1].id
+  ]
+
+  selector {
+    namespace = "externalsecrets"
+  }
+}
 # Policy
 data "aws_iam_policy_document" "external_secrets" {
   count = var.enabled ? 1 : 0
@@ -593,7 +595,7 @@ resource "helm_release" "external_secrets" {
   chart      = "external-secrets"
   repository = "https://charts.external-secrets.io"
   version    = "0.7.1"
-  namespace  = "external-secrets"
+  namespace  = "externalsecrets"
 
   set {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
