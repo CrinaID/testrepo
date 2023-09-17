@@ -513,7 +513,7 @@ resource "aws_eks_fargate_profile" "externalsecrets" {
   ]
 
   selector {
-    namespace = "externalsecrets"
+    namespace = "external-secrets"
   }
 }
 # Policy
@@ -595,7 +595,7 @@ resource "helm_release" "external_secrets" {
   chart      = "external-secrets"
   repository = "https://charts.external-secrets.io"
   version    = "0.7.1"
-  namespace  = "externalsecrets"
+  namespace  = "external-secrets"
 
   set {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
