@@ -616,7 +616,7 @@ module "eks-irsa" {
   version = "0.13.2"
 
   name = "apps_role_${var.env_name}"
-  region = var.aws_region
+  region = var.region
   cluster_name = aws_eks_cluster.cluster.name
   cluster_names = [
     aws_eks_cluster.cluster.name
@@ -650,7 +650,7 @@ resource "aws_iam_policy" "iamSecretPolicy" {
         ]
         Effect   = "Allow"
         Resource = [
-          "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:${var.env_name}/*"
+          "arn:aws:secretsmanager:${var.region}:${var.account_id}:secret:${var.env_name}/*"
         ]
       },
     ]
@@ -664,7 +664,7 @@ resource "helm_release" "external-secrets" {
   verify     = "false"
 
   values = [
-    templatefile("./helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
+    templatefile(".../helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
   ]
 
   set {
