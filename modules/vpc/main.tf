@@ -665,7 +665,7 @@ resource "helm_release" "external-secrets" {
   verify     = "false"
 
   values = [
-    templatefile("./helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
+    templatefile("${path.module}/helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
   ]
 
   set {
