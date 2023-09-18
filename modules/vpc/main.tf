@@ -611,7 +611,7 @@ resource "helm_release" "externalsecrets" {
 }
 
 */
-/*
+
 module "eks-irsa" {
   source  = "nalbam/eks-irsa/aws"
   version = "0.13.2"
@@ -635,43 +635,38 @@ module "eks-irsa" {
 }
 
 resource "aws_iam_policy" "iamSecretPolicy" {
-  name        = "${var.env_name}_secretPolicy"
+  name        = "${terraform.workspace}_secretPolicy"
   path        = "/"
-  description = "Allow access to ${var.env_name} secrets"
+  description = "Allow access to ${terraform.workspace} secrets"
 
   policy = jsonencode({
-    statement= {
-    actions = [
-      "secretsmanager:GetResourcePolicy",
-      "secretsmanager:GetSecretValue",
-      "secretsmanager:DescribeSecret",
-      "secretsmanager:ListSecretVersionIds"
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:ListSecretVersionIds"
+        ]
+        Effect   = "Allow"
+        Resource = [
+          "arn:aws:secretsmanager:${var.region}:855859226163:secret:${var.env_name}/*"
+        ]
+      },
     ]
-    resources = [
-      "*",
-    ]
-    effect = "Allow"
-  }
-
-  statement = {
-    actions = [
-      "ssm:GetParameter*"
-    ]
-    resources = [
-      "*",
-    ]
-    effect = "Allow"
-  }
   })
 }
-*/
+
 resource "helm_release" "external-secrets" {
   name       = "external-secrets"
   repository = "https://external-secrets.github.io/kubernetes-external-secrets/"
   chart      = "kubernetes-external-secrets"
   verify     = "false"
 
-
+  values = [
+    templatefile("./helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
+  ]
 
   set {
     name  = "metrics.enabled"
