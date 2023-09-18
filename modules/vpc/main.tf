@@ -663,7 +663,7 @@ resource "helm_release" "external-secrets" {
   repository = "https://external-secrets.github.io/kubernetes-external-secrets/"
   chart      = "kubernetes-external-secrets"
   verify     = "false"
-
+  namespace  = "external-secrets"
   values = [
     templatefile("${path.module}/helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
   ]
