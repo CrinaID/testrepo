@@ -516,7 +516,7 @@ resource "aws_eks_fargate_profile" "externalsecrets" {
     namespace = "external-secrets"
   }
 }
-/*# Policy
+# Policy
 data "aws_iam_policy_document" "external_secrets" {
   count = var.enabled ? 1 : 0
   statement {
@@ -589,6 +589,7 @@ resource "aws_iam_role_policy_attachment" "external_secrets" {
   role       = aws_iam_role.external_secrets[0].name
   policy_arn = aws_iam_policy.external_secrets[0].arn
 }
+/*
 resource "helm_release" "externalsecrets" {
 
   name       = "external-secrets"
@@ -610,7 +611,7 @@ resource "helm_release" "externalsecrets" {
 }
 
 */
-
+/*
 module "eks-irsa" {
   source  = "nalbam/eks-irsa/aws"
   version = "0.13.2"
@@ -663,16 +664,14 @@ resource "aws_iam_policy" "iamSecretPolicy" {
   }
   })
 }
-
+*/
 resource "helm_release" "external-secrets" {
   name       = "external-secrets"
   repository = "https://external-secrets.github.io/kubernetes-external-secrets/"
   chart      = "kubernetes-external-secrets"
   verify     = "false"
 
-  values = [
-    templatefile("${path.module}/helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
-  ]
+
 
   set {
     name  = "metrics.enabled"
