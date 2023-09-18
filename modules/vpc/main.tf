@@ -622,7 +622,7 @@ module "eks-irsa" {
   cluster_names = [
     aws_eks_cluster.cluster.name
   ]
-  kube_namespace      = "default"
+  kube_namespace      = "external-secrets"
   kube_serviceaccount = "external-secrets"
 
   policy_arns = [
