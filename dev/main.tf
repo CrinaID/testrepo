@@ -20,10 +20,7 @@ module "dynamodb" {
 }
 module "app_params" {
     source  = "../modules/parameter-store"
-   
-
     prefix = "/dev/"
-
     securestring_parameters = [
         "CLIENT_ID",
         "CLIENT_SECRET"

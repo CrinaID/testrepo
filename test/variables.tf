@@ -26,5 +26,5 @@ variable "cluster_version" {
 }
 variable "region" {
   type = string
-  value = "eu-west-1"
+  default = "eu-north-1"
 }

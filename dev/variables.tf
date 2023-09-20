@@ -26,6 +26,7 @@ variable "cluster_version" {
     default = "1.27"
 }
 variable "region"{
+    type = string
     default = "eu-north-1"
 }
 
