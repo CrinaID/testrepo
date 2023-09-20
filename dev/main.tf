@@ -14,7 +14,10 @@ module "vpcmodule"{
     cluster_version = var.cluster_version
     region = var.region
 }
-
+module "dynamodb" {
+    resource = "../modules/dynamodb"
+    env_name = var.env_name
+}
 module "app_params" {
     source  = "../modules/parameter-store"
    
