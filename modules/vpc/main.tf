@@ -497,8 +497,13 @@ resource "aws_efs_mount_target" "zone-b" {
   security_groups = [aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id]
 }
 
+#####################################################################################
 
-//External secrets setup
+
+// EXTERNAL SECRETS
+
+
+#####################################################################################
 
 resource "aws_eks_fargate_profile" "externalsecrets" {
   cluster_name           = aws_eks_cluster.cluster.name
@@ -589,28 +594,6 @@ resource "aws_iam_role_policy_attachment" "external_secrets" {
   role       = aws_iam_role.external_secrets[0].name
   policy_arn = aws_iam_policy.external_secrets[0].arn
 }
-/*
-resource "helm_release" "externalsecrets" {
-
-  name       = "external-secrets"
-  chart      = "external-secrets"
-  repository = "https://charts.external-secrets.io"
-  version    = "0.7.1"
-  namespace  = "external-secrets"
-  
-
-  set {
-    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = aws_iam_role.external_secrets[0].arn
-  }
-
-  values = [
-    yamlencode(var.settings)
-  ]
-
-}
-
-*/
 
 module "eks-irsa" {
   source  = "nalbam/eks-irsa/aws"
@@ -635,9 +618,9 @@ module "eks-irsa" {
 }
 
 resource "aws_iam_policy" "iamSecretPolicy" {
-  name        = "${terraform.workspace}_secretPolicy"
+  name        = "${var.env_name}_secretPolicy"
   path        = "/"
-  description = "Allow access to ${terraform.workspace} secrets"
+  description = "Allow access to ${var.env_name} secrets"
 
   policy = jsonencode({
     Version = "2012-10-17"

@@ -15,3 +15,14 @@ module "vpcmodule"{
     region = var.region
 }
 
+module "app_params" {
+    source  = "../modules/parameter-store"
+    version = "0.0.2"
+
+    prefix = "dev/"
+
+    securestring_parameters = [
+        "CLIENT_ID",
+        "CLIENT_SECRET"
+    ]
+}
