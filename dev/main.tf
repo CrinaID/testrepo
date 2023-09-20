@@ -19,7 +19,7 @@ module "app_params" {
     source  = "../modules/parameter-store"
    
 
-    prefix = "dev/"
+    prefix = "/dev/"
 
     securestring_parameters = [
         "CLIENT_ID",
