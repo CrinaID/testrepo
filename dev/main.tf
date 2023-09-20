@@ -17,7 +17,7 @@ module "vpcmodule"{
 
 module "app_params" {
     source  = "../modules/parameter-store"
-    version = "0.0.2"
+   
 
     prefix = "dev/"
 
