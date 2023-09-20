@@ -1,8 +1,4 @@
-terraform {
-    backend "s3" {
-      key = "dm-test-configuration/terraform.tfstate"
-    }  
-}
+
 module "vpcmodule"{
     source = "../modules/vpc"
     cidr_vpc = var.test_cidr
@@ -13,4 +9,17 @@ module "vpcmodule"{
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
     region = var.region
+}
+
+module "dynamodb" {
+    resource = "../modules/dynamodb"
+    env_name = var.env_name
+}
+module "app_params" {
+    source  = "../modules/parameter-store"
+    prefix = "/test/"
+    securestring_parameters = [
+        "CLIENT_ID",
+        "CLIENT_SECRET"
+    ]
 }
