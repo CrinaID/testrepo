@@ -354,12 +354,12 @@ data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy"
 #should have env specified
 resource "aws_iam_role" "aws_load_balancer_controller" {
   assume_role_policy = data.aws_iam_policy_document.aws_load_balancer_controller_assume_role_policy.json
-  name               = "aws-load-balancer-controller"
+  name               = "aws-load-balancer-controller-${env_name}"
 }
 
 resource "aws_iam_policy" "aws_load_balancer_controller" {
   policy = file("${path.module}/LBControllerTF.json")
-  name   = "LBControllerTF"
+  name   = "LBControllerTF-${env_name}"
 }
 
 resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attach" {
