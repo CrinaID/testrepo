@@ -1,6 +1,6 @@
 variable "region" {
     type = string
-    deafault = "eu-north-1"
+    default = "eu-north-1"
 }
 variable "devops_policy_name" {
   type    = string
