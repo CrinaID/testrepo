@@ -13,7 +13,7 @@ module "vpcmodule"{
 
 module "dynamodb" {
     source = "../modules/dynamodb"
-    env_name = var.env_name
+    env_name = var.test_env_name
 }
 module "app_params" {
     source  = "../modules/parameter-store"
