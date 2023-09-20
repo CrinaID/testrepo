@@ -15,7 +15,7 @@ module "vpcmodule"{
     region = var.region
 }
 module "dynamodb" {
-    resource = "../modules/dynamodb"
+    source = "../modules/dynamodb"
     env_name = var.env_name
 }
 module "app_params" {
