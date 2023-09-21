@@ -9,7 +9,7 @@ variable "devops_policy_name" {
 
 variable "devops_role_name" {
   type    = string
-  default = "dm-gen-devops-role"
+  default = "dm-gen-role-devops"
 }
 variable "developer_policy_name" {
   type    = string
@@ -18,7 +18,7 @@ variable "developer_policy_name" {
 
 variable "developer_role_name" {
   type    = string
-  default = "dm-gen-developer-role"
+  default = "dm-gen-role-developer"
 }
 
 variable "readonly_policy_name" {
@@ -28,5 +28,5 @@ variable "readonly_policy_name" {
 
 variable "readonly_role_name" {
   type    = string
-  default = "dm-gen-readonly-role"
+  default = "dm-gen-role-readonly"
 }
