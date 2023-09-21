@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: dm-frontend-service
-  namespace: staging
+  namespace: default
   labels:
     app: dm-frontend-app
 spec:
