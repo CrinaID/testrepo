@@ -1,5 +1,5 @@
 serviceAccount:
-  name: "external-secrets"
+  name: "dm-frontend-sa"
   annotations: {
     eks.amazonaws.com/role-arn: "${roleArn}"
   }
