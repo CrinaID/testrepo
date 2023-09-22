@@ -594,8 +594,8 @@ resource "aws_iam_policy" "iamSecretPolicy" {
 
 resource "helm_release" "external-secrets" {
   name       = "external-secrets"
-  repository = "https://external-secrets.github.io/kubernetes-external-secrets/"
-  chart      = "kubernetes-external-secrets"
+  repository = "https://charts.external-secrets.io"
+  chart      = "external-secrets"
   verify     = "false"
   namespace  = "frontend"
   create_namespace = true
