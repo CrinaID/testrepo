@@ -602,7 +602,7 @@ resource "helm_release" "external-secrets" {
   values = [
     templatefile("${path.module}/helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
   ]
-  set_string {
+  set {
     name  = "createCRD"
     value = "true"
   }
