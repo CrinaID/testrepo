@@ -20,9 +20,14 @@ module "dynamodb" {
 }
 module "app_params" {
     source  = "../modules/parameter-store"
-    prefix = "/dev/"
+    prefix = "/dm/dev/data-marketplace/gen/"
     securestring_parameters = [
-        "CLIENT_ID",
-        "CLIENT_SECRET"
+        "API_ENDPOINT",
+        "SSO_AUTH_URL",
+        "SSO_CALLBACK_URL",
+        "SSO_CLIENT_ID",
+        "SSO_CLIENT_SECRET",
+        "JWT_AUD",
+        "JWKS_URL"
     ]
 }
