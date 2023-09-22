@@ -55,13 +55,13 @@ variable "create_namespace" {
 
 variable "namespace" {
   type        = string
-  default     = "external-secrets"
+  default     = "frontend"
   description = "Kubernetes namespace to deploy EKS Spot termination handler Helm chart."
 }
 
 variable "service_account_name" {
   type        = string
-  default     = "external-secrets"
+  default     = "dm-frontend-sa"
   description = "External Secrets service account name"
 }
 

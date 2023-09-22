@@ -456,7 +456,7 @@ resource "aws_efs_mount_target" "zone-b" {
 
 resource "aws_eks_fargate_profile" "externalsecrets" {
   cluster_name           = aws_eks_cluster.cluster.name
-  fargate_profile_name   = "external-secrets"
+  fargate_profile_name   = "frontend"
   pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
 
   # These subnets must have the following resource tag: 
@@ -467,7 +467,7 @@ resource "aws_eks_fargate_profile" "externalsecrets" {
   ]
 
   selector {
-    namespace = "external-secrets"
+    namespace = "frontend"
   }
 }
 # Policy
@@ -524,7 +524,7 @@ data "aws_iam_policy_document" "external_secrets_assume" {
       variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
 
       values = [
-        "system:serviceaccount:external-secrets:external-secrets",
+        "system:serviceaccount::${var.namespace}:${var.service_account_name}",
       ]
     }
 
@@ -554,8 +554,8 @@ module "eks-irsa" {
   cluster_names = [
     aws_eks_cluster.cluster.name
   ]
-  kube_namespace      = "external-secrets"
-  kube_serviceaccount = "external-secrets"
+  kube_namespace      = "${var.namespace}"
+  kube_serviceaccount = "${var.service_account_name}"
 
   policy_arns = [
     aws_iam_policy.iamSecretPolicy.arn
@@ -595,7 +595,7 @@ resource "helm_release" "external-secrets" {
   repository = "https://external-secrets.github.io/kubernetes-external-secrets/"
   chart      = "kubernetes-external-secrets"
   verify     = "false"
-  namespace  = "external-secrets"
+  namespace  = "${var.namespace}"
   create_namespace = true
   values = [
     templatefile("${path.module}/helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
