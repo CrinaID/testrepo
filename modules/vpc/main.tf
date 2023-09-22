@@ -599,11 +599,13 @@ resource "helm_release" "external-secrets" {
   verify     = "false"
   namespace  = "frontend"
   create_namespace = true
-  installCRDs = true
   values = [
     templatefile("${path.module}/helm/kubernetes-external-secrets/values.yml", { roleArn = "${module.eks-irsa.arn}" })
   ]
-
+  set_string {
+    name  = "createCRD"
+    value = "true"
+  }
   set {
     name  = "metrics.enabled"
     value = "true"
