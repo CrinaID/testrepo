@@ -23,6 +23,9 @@ module "eks_cluster"{
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
     private_subnet_one_id = module.vpcmodule.private_subnet_one_id
+    private_subnet_two_id = module.vpcmodule.private_subnet_two_id
+    public_subnet_one_id = module.vpcmodule.public_subnet_one_id
+    public_subnet_two_id = module.vpcmodule.public_subnet_two_id
 }
 module "app_params" {
     source  = "../modules/parameter-store"

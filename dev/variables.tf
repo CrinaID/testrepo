@@ -30,8 +30,17 @@ variable "region"{
     default = "eu-north-1"
 }
 
+variable "private_subnet_one_id" {
+    type = string
+}
 
+variable "private_subnet_two_id" {
+    type = string
+}
 
-
-
-
+variable "public_subnet_one_id" {
+    type = string
+}
+variable "public_subnet_two_id" {
+    type = string
+}
