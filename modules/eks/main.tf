@@ -53,9 +53,9 @@ resource "aws_eks_cluster" "cluster" {
     //need to improve this code and not use 0 and 1 
     subnet_ids = [
         var.private_subnet_one_id,
-        aws_subnet.public_subnets[0].id,
-        aws_subnet.private_subnets[1].id,
-        aws_subnet.public_subnets[1].id
+        var.private_subnet_two_id,
+        var.public_subnet_one_id,
+        var.public_subnet_two_id,
     ]
   }
 
@@ -94,7 +94,7 @@ resource "aws_eks_fargate_profile" "kube-system" {
   //count = "${length(aws_subnet.private_subnets)}"
   subnet_ids = [
     var.private_subnet_one_id,
-    aws_subnet.private_subnets[1].id
+    var.private_subnet_two_id
   ]
 
   selector {
@@ -110,8 +110,8 @@ resource "aws_eks_fargate_profile" "staging" {
   # These subnets must have the following resource tag: 
   # kubernetes.io/cluster/<CLUSTER_NAME>.
   subnet_ids = [
-    aws_subnet.private_subnets[0].id,
-    aws_subnet.private_subnets[1].id
+    var.private_subnet_one_id,
+    var.private_subnet_two_id
   ]
 
   selector {
