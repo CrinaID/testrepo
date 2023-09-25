@@ -90,5 +90,5 @@ resource "helm_release" "aws-load-balancer-controller" {
     value = var.vpc_id
   }
 
-  depends_on = [aws_eks_fargate_profile.kube-system]
+  depends_on = [var.eks_fargate_profile_kubesystem]
 }

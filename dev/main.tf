@@ -32,7 +32,7 @@ module "load_balancer" {
     vpc_id = module.vpcmodule.vpc.id
     eks_cluster = module.eks_cluster.eks_cluster
     env_name = var.dev_env_name
-
+    eks_fargate_profile_kubesystem = module.eks_cluster.eks_fargate_profile_kubesystem
 }
 /*module "efs" {
     source = "../modules/efs"
