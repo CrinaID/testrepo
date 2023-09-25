@@ -52,7 +52,7 @@ resource "aws_eks_cluster" "cluster" {
     public_access_cidrs     = ["0.0.0.0/0"]
     //need to improve this code and not use 0 and 1 
     subnet_ids = [
-        private_subnet_one_id,
+        var.private_subnet_one_id,
         aws_subnet.public_subnets[0].id,
         aws_subnet.private_subnets[1].id,
         aws_subnet.public_subnets[1].id
@@ -93,7 +93,7 @@ resource "aws_eks_fargate_profile" "kube-system" {
 
   //count = "${length(aws_subnet.private_subnets)}"
   subnet_ids = [
-    aws_subnet.private_subnets[0].id,
+    var.private_subnet_one_id,
     aws_subnet.private_subnets[1].id
   ]
 
