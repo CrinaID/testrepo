@@ -27,6 +27,16 @@ module "eks_cluster"{
     public_subnet_one_id = module.vpcmodule.public_subnet_one_id
     public_subnet_two_id = module.vpcmodule.public_subnet_two_id
 }
+/*module "load_balancer" {
+    source = "../modules/load-balancer"
+
+}
+module "efs" {
+    source = "../modules/efs"
+}
+module "external_secrets"{
+    source = "../modules/external-secrets"
+}*/
 module "app_params" {
     source  = "../modules/parameter-store"
     prefix = "/dm/dev/data-marketplace/gen/"
