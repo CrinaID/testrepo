@@ -1,2 +1,2 @@
 variable "eks_cluster" {}
-variable "vpc" {}
+variable "vpc_id" {}
