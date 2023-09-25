@@ -18,7 +18,7 @@ module "dynamodb" {
     source = "../modules/dynamodb"
     env_name = var.dev_env_name
 }
-module "eks_cluster"{
+/*module "eks_cluster"{
     source = "../modules/eks"
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
@@ -34,7 +34,7 @@ module "load_balancer" {
     env_name = var.dev_env_name
     eks_fargate_profile_kubesystem = module.eks_cluster.eks_fargate_profile_kubesystem
 }
-/*module "efs" {
+module "efs" {
     source = "../modules/efs"
 }
 module "external_secrets"{
