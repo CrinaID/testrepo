@@ -32,15 +32,19 @@ variable "region"{
 
 variable "private_subnet_one_id" {
     type = string
+    default = module.vpcmodule.private_subnet_one_id
 }
 
 variable "private_subnet_two_id" {
     type = string
+    default = module.vpcmodule.private_subnet_two_id
 }
 
 variable "public_subnet_one_id" {
     type = string
+    default = module.vpcmodule.public_subnet_one_id
 }
 variable "public_subnet_two_id" {
     type = string
+    default = module.vpcmodule.public_subnet_two_id
 }
