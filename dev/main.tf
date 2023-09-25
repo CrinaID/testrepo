@@ -10,13 +10,18 @@ module "vpcmodule"{
     env_name = var.dev_env_name
     project_code = var.project_code
 
-    cluster_name = var.cluster_name
-    cluster_version = var.cluster_version
     region = var.region
 }
 module "dynamodb" {
     source = "../modules/dynamodb"
     env_name = var.dev_env_name
+}
+module "eks_cluster"{
+    source = "../modules/eks"
+
+
+    cluster_name = var.cluster_name
+    cluster_version = var.cluster_version
 }
 module "app_params" {
     source  = "../modules/parameter-store"
