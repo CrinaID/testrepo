@@ -27,11 +27,13 @@ module "eks_cluster"{
     public_subnet_one_id = module.vpcmodule.public_subnets_output[0].id
     public_subnet_two_id = module.vpcmodule.public_subnets_output[1].id
 }
-/*module "load_balancer" {
+module "load_balancer" {
     source = "../modules/load-balancer"
+    vpc_id = module.vpcmodule.vpc.id
+    eks_cluster = module.eks_cluster.eks_cluster
 
 }
-module "efs" {
+/*module "efs" {
     source = "../modules/efs"
 }
 module "external_secrets"{
