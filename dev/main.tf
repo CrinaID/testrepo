@@ -31,7 +31,7 @@ module "load_balancer" {
     source = "../modules/load-balancer"
     vpc_id = module.vpcmodule.vpc.id
     eks_cluster = module.eks_cluster.eks_cluster
-    env_name = module.vpcmodule.env_name
+    env_name = module.vpcmodule.dev_env_name
 
 }
 /*module "efs" {
