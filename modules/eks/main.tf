@@ -42,7 +42,7 @@ resource "aws_eks_cluster" "cluster" {
     //need to improve this code and not use 0 and 1 
     subnet_ids = [
         var.private_subnet_one_id,
-        var.private_subnet_two_id,
+        //var.private_subnet_two_id,
         var.public_subnet_one_id,
         var.public_subnet_two_id,
     ]
@@ -79,8 +79,6 @@ resource "aws_eks_fargate_profile" "kube-system" {
   cluster_name           = aws_eks_cluster.cluster.name
   fargate_profile_name   = "kube-system"
   pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
-
-  //count = "${length(aws_subnet.private_subnets)}"
   subnet_ids = [
     var.private_subnet_one_id,
     var.private_subnet_two_id
