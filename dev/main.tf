@@ -14,7 +14,7 @@ module "vpcmodule"{
     
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
-    region = var.region
+    //region = var.region
 }
 module "dynamodb" {
     source = "../modules/dynamodb"
