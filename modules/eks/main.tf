@@ -44,7 +44,7 @@ resource "aws_eks_cluster" "cluster" {
         var.private_subnet_one_id,
         var.private_subnet_two_id,
         var.public_subnet_one_id,
-        var.public_subnet_two_id,
+        var.public_subnet_two_id
     ]
   }
 
