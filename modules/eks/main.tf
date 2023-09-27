@@ -41,8 +41,10 @@ resource "aws_eks_cluster" "cluster" {
     public_access_cidrs     = ["0.0.0.0/0"]
     //need to improve this code and not use 0 and 1 
     subnet_ids = [
-        var.private_subnets_ids,
-        var.public_subnets_ids
+        var.private_subnet_one_id,
+        var.private_subnet_two_id,
+        var.public_subnet_one_id,
+        var.public_subnet_two_id,
     ]
   }
 
@@ -92,8 +94,8 @@ resource "aws_eks_fargate_profile" "staging" {
   # These subnets must have the following resource tag: 
   # kubernetes.io/cluster/<CLUSTER_NAME>.
   subnet_ids = [
-    var.private_subnet_one_id
-    //var.private_subnet_two_id
+    var.private_subnet_one_id,
+    var.private_subnet_two_id
   ]
 
   selector {
