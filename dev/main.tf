@@ -43,14 +43,14 @@ module "external_secrets"{
     openid_connector = module.load_balancer.openid_connector
     env_name = var.dev_env_name
     region = var.region
-    private_subnet_one_id = module.vpcmodule.private_subnets_output[0].id
-    private_subnet_two_id = module.vpcmodule.private_subnets_output[1].id
+    private_subnet_one_id = module.vpcmodule.private_subnets_output[0]
+    private_subnet_two_id = module.vpcmodule.private_subnets_output[1]
 }
 
 module "efs" {
     source = "../modules/efs"
-    private_subnet_one_id = module.vpcmodule.private_subnets_output[0].id
-    private_subnet_two_id = module.vpcmodule.private_subnets_output[1].id
+    private_subnet_one_id = module.vpcmodule.private_subnets_output[0]
+    private_subnet_two_id = module.vpcmodule.private_subnets_output[1]
     eks_cluster = module.eks_cluster.eks_cluster
 }
 
