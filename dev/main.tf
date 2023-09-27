@@ -22,8 +22,10 @@ module "eks_cluster"{
     source = "../modules/eks"
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
-    private_subnets_ids = module.vpcmodule.private_subnets_output.*.id
-    public_subnets_ids = module.vpcmodule.public_subnets_output.*.id
+    private_subnet_one_id = module.vpcmodule.private_subnets_output[0]
+    private_subnet_two_id = module.vpcmodule.private_subnets_output[1]
+    public_subnet_one_id = module.vpcmodule.public_subnets_output[0]
+    public_subnet_two_id = module.vpcmodule.public_subnets_output[1]
 
 }
 module "load_balancer" {

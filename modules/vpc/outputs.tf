@@ -1,8 +1,8 @@
 output "private_subnets_output" {
-    value = aws_subnet.private_subnets
+    value = aws_subnet.private_subnets.*.id
 }
 output "public_subnets_output" {
-    value = aws_subnet.public_subnets
+    value = aws_subnet.public_subnets.*.id
 }
 
 output "vpc" {
