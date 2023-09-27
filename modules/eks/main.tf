@@ -34,17 +34,6 @@ resource "aws_eks_cluster" "cluster" {
   name     = var.cluster_name
   version  = var.cluster_version
   role_arn = aws_iam_role.eks-cluster.arn
-  //count = "${length(aws_subnet.private_subnets)}"
-
-  /*enable_cluster_autoscaler = true
-  enable_aws_load_balancer_controller   = true
-  enable_metrics_server = true
-
-   metrics_server_helm_config = {
-    values = [templatefile("${path.module}/k8s/metrics-server-values.yaml", {
-      operating_system = "linux"
-    })]
-  }*/
   vpc_config {
 
     endpoint_private_access = true
