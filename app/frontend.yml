@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dm-frontend-deployment
-  namespace: frontend
+  namespace: staging
   labels:
     app: dm-frontend-app
 spec:
