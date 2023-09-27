@@ -2,6 +2,8 @@ variable "eks_cluster" {}
 variable "iam_fargate" {}
 variable "cluster_name" {}
 variable "openid_connector" {}
+variable "env_name" {}
+variable "region" {}
 variable "enabled" {
   type    = bool
   default = true

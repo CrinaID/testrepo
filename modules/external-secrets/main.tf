@@ -106,7 +106,7 @@ module "eks-irsa" {
   ]
 
   depends_on = [
-    aws_eks_cluster.cluster
+    var.eks_cluster
   ]
 }
 

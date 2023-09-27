@@ -40,6 +40,8 @@ module "external_secrets"{
     cluster_name = var.cluster_name
     iam_fargate = module.eks_cluster.iam_fargate
     openid_connector = module.load_balancer.openid_connector
+    env_name = var.env_name
+    region = var.region
 }
 
 module "efs" {
