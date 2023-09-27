@@ -7,17 +7,17 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dm-frontend-deployment
+  name: dm-backend-api
   namespace: application
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: dm-frontend-app
+      app: dm-backend-api
   template:
     metadata:
       labels:
-        app: dm-frontend-app
+        app: dm-backend-api
     spec:
       affinity:
         nodeAffinity:
@@ -28,48 +28,39 @@ spec:
                 operator: In
                 values:
                 - amd64
-      serviceAccountName: dm-frontend-sa
       containers:
-      - name: c-dm-frontend
-        image: 855859226163.dkr.ecr.eu-west-2.amazonaws.com/dm-frontend:ver0.0.18
+      - name: c-dm-backend-api
+        image: 855859226163.dkr.ecr.eu-west-2.amazonaws.com/dm-backend-api:ver0.1.0
         resources:
           requests:
             memory: "0.5Gi"
             cpu: "0.25"
         env:
-          - name: API_ENDPOINT
+          - name: TRIPLESTORE_URL
+            value: http://dm-backend-api-fuseki-service
+          - name: DATASET_NAME
+            value: ds
+          - name: JWT_AUD
             valueFrom:
               secretKeyRef:
                 name: dm-externalsecret-frontend
-                key: API_ENDPOINT
+                key: JWT_AUD
                 optional: false
-          - name: SSO_AUTH_URL
+          - name: JWKS_URL
             valueFrom:
               secretKeyRef:
                 name: dm-externalsecret-frontend
-                key: SSO_AUTH_URL
+                key: JWKS_URL
                 optional: false
-          - name: SSO_CALLBACK_URL
+          - name: OPS_API_KEY
             valueFrom:
               secretKeyRef:
                 name: dm-externalsecret-frontend
-                key: SSO_CALLBACK_URL
+                key: OPS_API_KEY
                 optional: false
-          - name: SSO_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                name: dm-externalsecret-frontend
-                key: SSO_CLIENT_ID
-                optional: false
-          - name: SSO_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: dm-externalsecret-frontend
-                key: SSO_CLIENT_SECRET
-                optional: false             
         ports:
         - name: http
-          containerPort: 3000
+          containerPort: 8000
         imagePullPolicy: IfNotPresent
       nodeSelector:
         kubernetes.io/os: linux

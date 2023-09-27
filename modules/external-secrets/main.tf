@@ -1,6 +1,6 @@
 resource "aws_eks_fargate_profile" "externalsecrets" {
   cluster_name           = var.eks_cluster.name
-  fargate_profile_name   = "frontend"
+  fargate_profile_name   = "application"
   pod_execution_role_arn = var.iam_fargate.arn
 
   # These subnets must have the following resource tag: 
@@ -11,7 +11,7 @@ resource "aws_eks_fargate_profile" "externalsecrets" {
   ]
 
   selector {
-    namespace = "frontend"
+    namespace = "application"
   }
 }
 # Policy
