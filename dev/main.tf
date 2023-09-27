@@ -33,13 +33,22 @@ module "load_balancer" {
     eks_cluster = module.eks_cluster.eks_cluster
     env_name = var.dev_env_name
     eks_fargate_profile_kubesystem = module.eks_cluster.eks_fargate_profile_kubesystem
-}/*
-module "efs" {
-    source = "../modules/efs"
 }
 module "external_secrets"{
     source = "../modules/external-secrets"
-}*/
+    eks_cluster = module.eks_cluster.eks_cluster
+    cluster_name = var.cluster_name
+    iam_fargate = module.eks_cluster.iam_fargate
+    openid_connector = module.load_balancer.openid_connector
+}
+
+module "efs" {
+    source = "../modules/efs"
+    private_subnet_one_id = module.vpcmodule.private_subnets_output[0].id
+    private_subnet_two_id = module.vpcmodule.private_subnets_output[1].id
+    eks_cluster = module.eks_cluster.eks_cluster
+}
+
 module "app_params" {
     source  = "../modules/parameter-store"
     prefix = "/dm/dev/data-marketplace/gen/"

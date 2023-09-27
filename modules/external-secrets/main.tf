@@ -1,13 +1,13 @@
 resource "aws_eks_fargate_profile" "externalsecrets" {
-  cluster_name           = aws_eks_cluster.cluster.name
+  cluster_name           = var.eks_cluster.name
   fargate_profile_name   = "frontend"
-  pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
+  pod_execution_role_arn = var.iam_fargate.arn
 
   # These subnets must have the following resource tag: 
   # kubernetes.io/cluster/<CLUSTER_NAME>.
   subnet_ids = [
-    aws_subnet.private_subnets[0].id,
-    aws_subnet.private_subnets[1].id
+    var.private_subnet_one_id,
+    var.private_subnet_two.id
   ]
 
   selector {
@@ -60,12 +60,12 @@ data "aws_iam_policy_document" "external_secrets_assume" {
 
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.eks.arn]
+      identifiers = [var.openid_connector.arn]
     }
 
     condition {
       test     = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
+      variable = "${replace(var.openid_connector.url, "https://", "")}:sub"
 
       values = [
         "system:serviceaccount::${var.namespace}:${var.service_account_name}",
@@ -94,9 +94,9 @@ module "eks-irsa" {
 
   name = "apps_role_${var.env_name}"
   region = var.region
-  cluster_name = aws_eks_cluster.cluster.name
+  cluster_name = var.eks_cluster.name
   cluster_names = [
-    aws_eks_cluster.cluster.name
+    var.eks_cluster.name
   ]
   kube_namespace      = "${var.namespace}"
   kube_serviceaccount = "${var.service_account_name}"
