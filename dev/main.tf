@@ -23,7 +23,7 @@ module "eks_cluster"{
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
     private_subnet_one_id = "${module.vpcmodule.private_subnets_output[0].id}"
-    private_subnet_two_id = "${module.vpcmodule.private_subnets_output[1].id}"
+    //private_subnet_two_id = "${module.vpcmodule.private_subnets_output[1].id}"
     public_subnet_one_id = module.vpcmodule.public_subnets_output[0].id
     public_subnet_two_id = module.vpcmodule.public_subnets_output[1].id
 }
