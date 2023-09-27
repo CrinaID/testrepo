@@ -142,11 +142,11 @@ EOH
   }
 }
 data "aws_eks_cluster" "this" {
-  name = module.eks.cluster_name
+  name = aws_eks_cluster.cluster.name
 }
 
 data "aws_eks_cluster_auth" "this" {
-  name = module.eks.cluster_name
+  name = aws_eks_cluster.cluster.name
 }
 
 
