@@ -4,6 +4,13 @@ variable "cluster_name" {}
 variable "openid_connector" {}
 variable "env_name" {}
 variable "region" {}
+
+variable "private_subnet_one_id" {
+    
+}
+variable "private_subnet_two_id" {
+
+}
 variable "enabled" {
   type    = bool
   default = true
