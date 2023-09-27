@@ -48,7 +48,7 @@ variable "create_namespace" {
 
 variable "namespace" {
   type        = string
-  default     = "frontend"
+  default     = "application"
   description = "Kubernetes namespace to deploy EKS Spot termination handler Helm chart."
 }
 
