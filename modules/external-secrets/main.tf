@@ -7,7 +7,7 @@ resource "aws_eks_fargate_profile" "externalsecrets" {
   # kubernetes.io/cluster/<CLUSTER_NAME>.
   subnet_ids = [
     var.private_subnet_one_id,
-    var.private_subnet_two.id
+    var.private_subnet_two_id
   ]
 
   selector {
