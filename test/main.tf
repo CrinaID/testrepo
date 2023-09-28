@@ -41,7 +41,7 @@ module "external_secrets"{
     eks_cluster = module.eks_cluster.eks_cluster
     cluster_name = var.cluster_name
     iam_fargate = module.eks_cluster.iam_fargate
-    openid_connector = module.load_balancer.openid_connector
+    openid_connector = module.load_balancer_test.openid_connector
     env_name = var.test_env_name
     region = var.region
     private_subnet_one_id = module.vpcmodule.private_subnets_output[0]
