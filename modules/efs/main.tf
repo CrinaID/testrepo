@@ -1,5 +1,5 @@
 resource "aws_efs_file_system" "eks" {
-  creation_token = "eks"
+  creation_token = "eks-${var.env_name}"
 
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
@@ -10,7 +10,7 @@ resource "aws_efs_file_system" "eks" {
   # }
 
   tags = {
-    Name = "dm-eks-filesystem"
+    Name = "dm-eks-filesystem-${var.env_name}"
   }
 }
 

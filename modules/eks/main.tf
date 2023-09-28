@@ -53,7 +53,7 @@ resource "aws_eks_cluster" "cluster" {
 
 
 resource "aws_iam_role" "eks-fargate-profile" {
-  name = "eks-fargate-profile"
+  name = "eks-fargate-profile-${var.env_name}"
 
   assume_role_policy = jsonencode({
     Statement = [{
