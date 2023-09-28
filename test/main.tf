@@ -37,7 +37,7 @@ module "load_balancer" {
     eks_fargate_profile_kubesystem = module.eks_cluster.eks_fargate_profile_kubesystem
 }
 module "external_secrets"{
-    source = "../modules/external-secrets"
+    source = "../modules/external-secrets-test"
     eks_cluster = module.eks_cluster.eks_cluster
     cluster_name = var.cluster_name
     iam_fargate = module.eks_cluster.iam_fargate

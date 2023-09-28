@@ -38,8 +38,8 @@ module "load_balancer" {
     env_name = var.dev_env_name
     eks_fargate_profile_kubesystem = module.eks_cluster.eks_fargate_profile_kubesystem
 }
-module "external_secrets"{
-    source = "../modules/external-secrets"
+module "external_secrets_dev"{
+    source = "../modules/external-secrets-dev"
     eks_cluster = module.eks_cluster.eks_cluster
     cluster_name = var.cluster_name
     iam_fargate = module.eks_cluster.iam_fargate
