@@ -53,6 +53,7 @@ module "efs" {
     private_subnet_one_id = module.vpcmodule.private_subnets_output[0]
     private_subnet_two_id = module.vpcmodule.private_subnets_output[1]
     eks_cluster = module.eks_cluster.eks_cluster
+    env_name = var.test_env_name
 }
 
 module "app_params" {
