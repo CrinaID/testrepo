@@ -22,10 +22,11 @@ module "eks_cluster"{
     source = "../modules/eks"
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
-    private_subnet_one_id = module.vpcmodule.private_subnets_output[0].id
-    private_subnet_two_id = module.vpcmodule.private_subnets_output[1].id
-    public_subnet_one_id = module.vpcmodule.public_subnets_output[0].id
-    public_subnet_two_id = module.vpcmodule.public_subnets_output[1].id
+    private_subnet_one_id = module.vpcmodule.private_subnets_output[0]
+    private_subnet_two_id = module.vpcmodule.private_subnets_output[1]
+    public_subnet_one_id = module.vpcmodule.public_subnets_output[0]
+    public_subnet_two_id = module.vpcmodule.public_subnets_output[1]
+
 }
 module "load_balancer" {
     source = "../modules/load-balancer"
@@ -42,20 +43,20 @@ module "external_secrets"{
     openid_connector = module.load_balancer.openid_connector
     env_name = var.test_env_name
     region = var.region
-    private_subnet_one_id = module.vpcmodule.private_subnets_output[0].id
-    private_subnet_two_id = module.vpcmodule.private_subnets_output[1].id
+    private_subnet_one_id = module.vpcmodule.private_subnets_output[0]
+    private_subnet_two_id = module.vpcmodule.private_subnets_output[1]
 }
 
 module "efs" {
     source = "../modules/efs"
-    private_subnet_one_id = module.vpcmodule.private_subnets_output[0].id
-    private_subnet_two_id = module.vpcmodule.private_subnets_output[1].id
+    private_subnet_one_id = module.vpcmodule.private_subnets_output[0]
+    private_subnet_two_id = module.vpcmodule.private_subnets_output[1]
     eks_cluster = module.eks_cluster.eks_cluster
 }
 
 module "app_params" {
     source  = "../modules/parameter-store"
-    prefix = "/dm/test/data-marketplace/gen/"
+    prefix = "/dm/dev/data-marketplace/gen/"
     securestring_parameters = [
         "API_ENDPOINT",
         "SSO_AUTH_URL",
@@ -66,4 +67,3 @@ module "app_params" {
         "JWKS_URL"
     ]
 }
-
