@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy"
   condition {
     test     = "StringEquals"
     variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
-    values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+    values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller-test"]
   }
 
   principals {
@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy"
   }
   }
 }
-#should have env specified
+
 resource "aws_iam_role" "aws_load_balancer_controller" {
   assume_role_policy = data.aws_iam_policy_document.aws_load_balancer_controller_assume_role_policy.json
   name               = "aws-load-balancer-controller-${var.env_name}"
