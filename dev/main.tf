@@ -24,6 +24,7 @@ module "eks_cluster"{
     source = "../modules/eks"
     cluster_name = var.cluster_name
     cluster_version = var.cluster_version
+    env_name = var.dev_env_name
     private_subnet_one_id = module.vpcmodule.private_subnets_output[0]
     private_subnet_two_id = module.vpcmodule.private_subnets_output[1]
     public_subnet_one_id = module.vpcmodule.public_subnets_output[0]
