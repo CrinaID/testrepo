@@ -29,14 +29,14 @@ module "eks_cluster"{
     public_subnet_two_id = module.vpcmodule.public_subnets_output[1]
 
 }
-module "load_balancer" {
+module "load_balancer_test" {
     source = "../modules/load-balancer-test"
     vpc_id = module.vpcmodule.vpc.id
     eks_cluster = module.eks_cluster.eks_cluster
     env_name = var.test_env_name
     eks_fargate_profile_kubesystem = module.eks_cluster.eks_fargate_profile_kubesystem
 }
-module "external_secrets"{
+module "external_secrets_test"{
     source = "../modules/external-secrets-test"
     eks_cluster = module.eks_cluster.eks_cluster
     cluster_name = var.cluster_name
