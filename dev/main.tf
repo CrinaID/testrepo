@@ -31,7 +31,7 @@ module "eks_cluster"{
     public_subnet_two_id = module.vpcmodule.public_subnets_output[1]
 
 }
-module "load_balancer" {
+module "load_balancer_dev" {
     source = "../modules/load-balancer-dev"
     vpc_id = module.vpcmodule.vpc.id
     eks_cluster = module.eks_cluster.eks_cluster
