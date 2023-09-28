@@ -56,7 +56,7 @@ module "efs" {
 
 module "app_params" {
     source  = "../modules/parameter-store"
-    prefix = "/dm/dev/data-marketplace/gen/"
+    prefix = "/dm/test/data-marketplace/gen/"
     securestring_parameters = [
         "API_ENDPOINT",
         "SSO_AUTH_URL",
