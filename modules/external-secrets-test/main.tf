@@ -135,7 +135,7 @@ resource "aws_iam_policy" "iamSecretPolicy" {
 }
 
 resource "helm_release" "external-secrets-test" {
-  name       = "external-secrets"
+  name       = "external-secrets-test"
   repository = "https://charts.external-secrets.io"
   chart      = "external-secrets"
   verify     = "false"

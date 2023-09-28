@@ -43,8 +43,8 @@ resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attach" 
 }
 
 
-resource "helm_release" "aws-load-balancer-controller" {
-  name = "aws-load-balancer-controller"
+resource "helm_release" "aws-load-balancer-controller-test" {
+  name = "aws-load-balancer-controller-test"
 
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
